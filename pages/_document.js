@@ -1,5 +1,4 @@
-import Document, { Html, Main, NextScript } from "next/document";
-import { Head } from "next/head";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -11,7 +10,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>Clock Dashboard</title>
           <meta
             name="keywords"
             content="weather, dashboard, clock, widgets, signage-board"
