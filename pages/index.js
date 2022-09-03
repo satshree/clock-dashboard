@@ -91,7 +91,7 @@ export default class Home extends Component {
                             })
                           }
                         />
-                        <label className="form-check-label" for="checkbox">
+                        <label className="form-check-label" htmlFor="checkbox">
                           Show traffic data to work
                         </label>
                       </div>
