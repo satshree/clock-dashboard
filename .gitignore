@@ -1,5 +1,6 @@
 # Custom
 package-lock.json
+git_merge*
 
 # macOS
 .DS_Store
