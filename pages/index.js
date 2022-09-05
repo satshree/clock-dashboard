@@ -39,7 +39,7 @@ export default class Home extends Component {
     if (city) {
       $.ajax({
         method: "GET",
-        url: "http://api.openweathermap.org/geo/1.0/direct",
+        url: "https://api.openweathermap.org/geo/1.0/direct",
         data: {
           q: city,
           appid: process.env.NEXT_PUBLIC_OPENWEATHER_API,
