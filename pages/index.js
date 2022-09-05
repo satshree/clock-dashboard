@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import Head from "next/head";
+import $ from "jquery";
+
+import timezones from "../timezones.json";
 
 export default class Home extends Component {
   constructor(props) {
@@ -8,16 +11,82 @@ export default class Home extends Component {
     this.state = {
       timezone: "",
       weather: "",
-      trafficToWork: false,
-      work: "",
+      showWeather: true,
+      // trafficToWork: false,
+      // work: "",
+      weatherUnit: "metric",
+      weatherLocation: {
+        progress: false,
+        lat: "",
+        lon: "",
+        text: "",
+      },
     };
 
     this.completeSetup = this.completeSetup.bind(this);
+    this.setWeatherLocation = this.setWeatherLocation.bind(this);
+  }
+
+  setWeatherLocation(e) {
+    let city = e.target.value;
+    let { weatherLocation } = this.state;
+    weatherLocation.progress = true;
+    weatherLocation.text = "";
+    weatherLocation.lat = "";
+    weatherLocation.lon = "";
+    this.setState({ ...this.state, weather: city, weatherLocation });
+
+    if (city) {
+      $.ajax({
+        method: "GET",
+        url: "http://api.openweathermap.org/geo/1.0/direct",
+        data: {
+          q: city,
+          appid: process.env.NEXT_PUBLIC_OPENWEATHER_API,
+        },
+        success: (resp) => {
+          weatherLocation.progress = false;
+          // console.log(resp);
+
+          if (resp[0]) {
+            let text = "";
+            resp[0].state
+              ? (text = `${resp[0].name} (${resp[0].country}/${resp[0].state})`)
+              : (text = `${resp[0].name} (${resp[0].country})`);
+            weatherLocation.text = text;
+            weatherLocation.lat = resp[0].lat;
+            weatherLocation.lon = resp[0].lon;
+          }
+
+          this.setState({
+            ...this.state,
+            weatherLocation,
+          });
+        },
+        error: (err) => {
+          // console.log(err);
+
+          weatherLocation.progress = false;
+          this.setState({
+            ...this.state,
+            weatherLocation,
+          });
+        },
+      });
+    } else {
+      weatherLocation.progress = false;
+      this.setState({ ...this.state, weather: city, weatherLocation });
+    }
   }
 
   completeSetup(e) {
     e.preventDefault();
-    alert("Done!");
+
+    if (!this.state.weatherLocation.text && this.state.showWeather) {
+      alert("Select proper city name for weather!");
+    } else {
+      alert("Done!");
+    }
   }
 
   render() {
@@ -36,47 +105,111 @@ export default class Home extends Component {
                 Use any of your leftover devices (tablets/2-in-1) or televisions
                 as signage display for a clock widget dashboard.
               </span>
+              <br />
+              <br />
               <h2>Setup</h2>
               <hr />
               <form onSubmit={this.completeSetup}>
                 <div className="row">
                   <div className="col-md mb-3">
-                    <select
-                      className="form-select"
-                      placeholder="Timezone"
-                      value={this.state.timezone}
-                      onChange={(e) =>
-                        this.setState({
-                          ...this.state,
-                          timezone: e.target.value,
-                        })
-                      }
-                      required={true}
-                    >
-                      <option value="" disabled>
-                        Select Timezone
-                      </option>
-                    </select>
+                    <div className="setup-card">
+                      <h4>Clock</h4>
+                      <hr />
+                      <select
+                        className="form-select"
+                        placeholder="Timezone"
+                        value={this.state.timezone}
+                        onChange={(e) =>
+                          this.setState({
+                            ...this.state,
+                            timezone: e.target.value,
+                          })
+                        }
+                        required={true}
+                      >
+                        <option value="" disabled>
+                          Select Timezone
+                        </option>
+                        {timezones.map((timezone, index) => (
+                          <option key={index} value={timezone.text}>
+                            {timezone.value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="col-md mb-3">
-                    <select
-                      className="form-select"
-                      placeholder="Weather"
-                      value={this.state.weather}
-                      onChange={(e) =>
-                        this.setState({
-                          ...this.state,
-                          weather: e.target.value,
-                        })
-                      }
-                      required={true}
-                    >
-                      <option value="" disabled>
-                        Select Weather Location
-                      </option>
-                    </select>
+                    <div className="setup-card">
+                      <h4>Weather</h4>
+                      <hr />
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="checkbox"
+                          checked={this.state.showWeather}
+                          onChange={() =>
+                            this.setState({
+                              ...this.state,
+                              showWeather: !this.state.showWeather,
+                            })
+                          }
+                        />
+                        <label className="form-check-label" htmlFor="checkbox">
+                          Show
+                        </label>
+                      </div>
+                      <br />
+                      <div className="w-100">
+                        <input
+                          className="form-control"
+                          placeholder="Enter City Name"
+                          value={this.state.weather}
+                          onChange={this.setWeatherLocation}
+                          required={this.state.showWeather}
+                          disabled={!this.state.showWeather}
+                        />
+                        <span>
+                          {this.state.weatherLocation.progress ? (
+                            <div className="d-flex align-items-center mt-2">
+                              <div
+                                className="spinner-border spinner-border-sm me-2"
+                                role="status"
+                              >
+                                <span className="visually-hidden">
+                                  Loading...
+                                </span>
+                              </div>
+                              Fetching location data...
+                            </div>
+                          ) : (
+                            this.state.weatherLocation.text
+                          )}
+                        </span>
+                      </div>
+                      <br />
+                      <select
+                        className="form-select"
+                        placeholder="Unit"
+                        value={this.state.weatherUnit}
+                        onChange={(e) =>
+                          this.setState({
+                            ...this.state,
+                            weatherUnit: e.target.value,
+                          })
+                        }
+                        required={this.state.showWeather}
+                        disabled={!this.state.showWeather}
+                      >
+                        <option value="" disabled>
+                          Select Weather Unit
+                        </option>
+                        <option value="metric">Metric</option>
+                        <option value="imperial">Imperial</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="col-12">
+                  {/* <div className="col-12">
                     <div className="">
                       <div className="form-check form-switch">
                         <input
@@ -112,7 +245,7 @@ export default class Home extends Component {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <br />
                 <div className="text-center">
