@@ -38,7 +38,6 @@ export default class Clock extends Component {
 
     let timeSplit = time.split(" ");
 
-    console.log(timezone, time, timeSplit);
     return {
       hour: timeSplit[0].split(":")[0],
       minute: timeSplit[0].split(":")[1],

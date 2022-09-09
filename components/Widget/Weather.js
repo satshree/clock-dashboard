@@ -73,7 +73,7 @@ export default class Weather extends Component {
 
   render() {
     return (
-      <div style={{ fontSize: "16px" }}>
+      <div style={{ fontSize: "20px" }}>
         {this.state.error ? (
           <div>Unable to fetch weather. Try refreshing this page.</div>
         ) : this.state.loading ? (
