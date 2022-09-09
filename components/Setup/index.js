@@ -15,8 +15,6 @@ export default class Setup extends Component {
       timezone: "",
       weather: "",
       showWeather: true,
-      // trafficToWork: false,
-      // work: "",
       weatherUnit: "metric",
       weatherLocation: {
         progress: false,
@@ -106,22 +104,26 @@ export default class Setup extends Component {
   completeSetup(e) {
     e.preventDefault();
 
-    if (
-      (this.state.weatherLocation.text === "" ||
-        this.state.weatherLocation.text === "Cannot find city") &&
-      this.state.showWeather
-    ) {
-      alert("Select proper city name for weather!");
-    } else {
-      saveToLocalStorage("weather", {
-        location: this.state.weatherLocation,
-        unit: this.state.weatherUnit,
-      });
+    saveToLocalStorage("timezone", this.state.timezone);
 
-      saveToLocalStorage("timezone", this.state.timezone);
+    Router.push("/dashboard");
 
-      Router.push("/dashboard");
-    }
+    // if (
+    //   (this.state.weatherLocation.text === "" ||
+    //     this.state.weatherLocation.text === "Cannot find city") &&
+    //   this.state.showWeather
+    // ) {
+    //   alert("Select proper city name for weather!");
+    // } else {
+    //   saveToLocalStorage("weather", {
+    //     location: this.state.weatherLocation,
+    //     unit: this.state.weatherUnit,
+    //   });
+
+    //   saveToLocalStorage("timezone", this.state.timezone);
+
+    //   Router.push("/dashboard");
+    // }
   }
 
   render() {
@@ -256,43 +258,6 @@ export default class Setup extends Component {
                             </span>
                           ) : null}
                         </div>
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* <div className="col-12">
-                    <div className="">
-                      <div className="form-check form-switch">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="checkbox"
-                          checked={this.state.trafficToWork}
-                          onChange={() =>
-                            this.setState({
-                              ...this.state,
-                              trafficToWork: !this.state.trafficToWork,
-                            })
-                          }
-                        />
-                        <label className="form-check-label" htmlFor="checkbox">
-                          Show traffic data to work
-                        </label>
-                      </div>
-                      <div className="w-100" style={{ marginTop: "10px" }}>
-                        <input
-                          type="link"
-                          className="form-control"
-                          placeholder="Enter Google Maps link of your workplace"
-                          value={this.state.work}
-                          onChange={(e) =>
-                            this.setState({
-                              ...this.state,
-                              work: e.target.value,
-                            })
-                          }
-                          required={this.state.trafficToWork}
-                          disabled={!this.state.trafficToWork}
-                        />
                       </div>
                     </div>
                   </div> */}

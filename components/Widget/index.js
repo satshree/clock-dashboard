@@ -11,21 +11,30 @@ import Clock from "./Clock";
 const Widget = (props) => {
   const handle = useFullScreenHandle();
 
+  let timezone = loadFromLocalStorage("timezone");
+
   return (
     <>
       <div className="full-screen-btn">
-        <button
-          type="button"
-          className="btn btn-outline-light"
-          onClick={handle.enter}
-        >
-          Full Screen
-        </button>
-        <Link href="/">
-          <button type="button" className="btn btn-outline-light ms-2">
-            Setup
-          </button>
-        </Link>
+        <div className="text-center">
+          Showing time for {timezone}
+          <br />
+          <br />
+          <div>
+            <button
+              type="button"
+              className="btn btn-outline-light"
+              onClick={handle.enter}
+            >
+              Full Screen
+            </button>
+            <Link href="/">
+              <button type="button" className="btn btn-outline-light ms-2">
+                Setup
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
       <FullScreen handle={handle}>
         <div style={{ background: "#000" }} onClick={handle.exit}>
