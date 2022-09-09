@@ -18,6 +18,10 @@ class MyDocument extends Document {
             name="description"
             content="A full screen dashboard with clock, weather and other widgets."
           />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
+          />
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="theme-color" content="#000000" />
           <link rel="manifest" href="/site.webmanifest" />

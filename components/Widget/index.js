@@ -23,6 +23,7 @@ const Widget = (props) => {
           <br /> */}
           <div>
             <button
+              id="full-screen-btn"
               type="button"
               className="btn btn-outline-light"
               onClick={handle.enter}
