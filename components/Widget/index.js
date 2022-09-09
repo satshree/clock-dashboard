@@ -57,14 +57,20 @@ class WidgetContainer extends Component {
   }
 
   componentDidMount() {
-    let weather = loadFromLocalStorage("weather");
+    // let weather = loadFromLocalStorage("weather");
     let timezone = loadFromLocalStorage("timezone");
 
-    if (!(weather && weather.location && weather.unit && timezone)) {
+    if (!timezone) {
       Router.push("/");
     } else {
-      this.setState({ ...this.state, weather, timezone });
+      this.setState({ ...this.state, timezone });
     }
+
+    // if (!(weather && weather.location && weather.unit && timezone)) {
+    //   Router.push("/");
+    // } else {
+    //   this.setState({ ...this.state, weather, timezone });
+    // }
   }
 
   render() {
