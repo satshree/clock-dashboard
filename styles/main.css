@@ -3,3 +3,39 @@
   border-radius: 1rem;
   padding: 1rem;
 }
+
+.full-screen-btn {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.clock {
+  font-family: "Cabin Sketch", cursive;
+  font-size: 20rem;
+}
+
+.clock .secondary {
+  font-size: 10rem;
+}
+
+@media (max-width: 900px) {
+  .clock {
+    font-size: 10rem;
+  }
+
+  .clock .secondary {
+    font-size: 5rem;
+  }
+}
+
+@media (max-width: 564px) {
+  .clock {
+    font-size: 5rem;
+  }
+
+  .clock .secondary {
+    font-size: 2.5rem;
+  }
+}
