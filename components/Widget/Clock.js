@@ -32,12 +32,13 @@ export default class Clock extends Component {
   getTime() {
     let { timezone } = this.props;
 
-    let offset = timezone.split(" ")[0].replace("(UTC", "").replace(")", "");
+    // let offset = timezone.split(" ")[0].replace("(UTC", "").replace(")", "");
 
-    let time = moment().utcOffset(offset).format("h:mm:ss a");
+    let time = moment().utcOffset(timezone.value).format("h:mm:ss a");
 
     let timeSplit = time.split(" ");
 
+    console.log(timezone, time, timeSplit);
     return {
       hour: timeSplit[0].split(":")[0],
       minute: timeSplit[0].split(":")[1],
@@ -58,18 +59,22 @@ export default class Clock extends Component {
         <div className="d-flex align-items-center w-100">
           {this.ready() ? (
             <>
-              <div id="hour">{this.state.time.hour}</div>
-              <div
-                className="dotdot"
-                style={{ color: this.state.blink ? "white" : "gray" }}
-              >
-                :
-              </div>
-              <div id="minute">{this.state.time.minute}</div>
-              <div className="d-flex align-item-end ms-3 secondary">
-                <div id="second">{this.state.time.second}</div>
-                <div id="ampm" style={{ marginLeft: "1rem" }}>
-                  {this.state.time.ampm}
+              <div className="d-flex align-items-center justify-content-between w-100">
+                <div className="d-flex">
+                  <div id="hour">{this.state.time.hour}</div>
+                  <div
+                    className="dotdot"
+                    style={{ color: this.state.blink ? "white" : "gray" }}
+                  >
+                    :
+                  </div>
+                  <div id="minute">{this.state.time.minute}</div>
+                </div>
+                <div className="d-flex ms-3 secondary">
+                  <div id="second">{this.state.time.second}</div>
+                  <div id="ampm" style={{ marginLeft: "1rem" }}>
+                    {this.state.time.ampm}
+                  </div>
                 </div>
               </div>
             </>

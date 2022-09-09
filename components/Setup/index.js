@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import Head from "next/head";
 import Router from "next/router";
 import $ from "jquery";
+import Select from "react-select";
 
 import { saveToLocalStorage, loadFromLocalStorage } from "../../localStorage";
 
-import timezones from "../../timezones.json";
+// import timezones from "../../timezones.json";
+import namedTimezones from "../../namedTimezones.json";
 
 export default class Setup extends Component {
   constructor(props) {
@@ -126,6 +128,11 @@ export default class Setup extends Component {
     // }
   }
 
+  getTimezones = () =>
+    namedTimezones
+      .filter((timezone) => timezone.utc !== "UTC")
+      .map((timezone) => ({ value: timezone.utc, label: timezone.timezone }));
+
   render() {
     return (
       <>
@@ -152,27 +159,22 @@ export default class Setup extends Component {
                     <div className="setup-card">
                       <h4>Clock</h4>
                       <hr />
-                      <select
-                        className="form-select"
-                        placeholder="Timezone"
+                      <Select
+                        instanceId={"timezone-select"}
                         value={this.state.timezone}
-                        onChange={(e) =>
+                        onChange={(timezone) =>
                           this.setState({
                             ...this.state,
-                            timezone: e.target.value,
+                            timezone,
                           })
                         }
-                        required={true}
-                      >
-                        <option value="" disabled>
-                          Select Timezone
-                        </option>
-                        {timezones.map((timezone, index) => (
-                          <option key={index} value={timezone.text}>
-                            {timezone.value}
-                          </option>
-                        ))}
-                      </select>
+                        options={this.getTimezones()}
+                        placeholder="Select Timezone"
+                        noOptionsMessage={() =>
+                          "Try searching for continent/country or nearby city"
+                        }
+                        isSearchable
+                      />
                     </div>
                   </div>
                   {/* <div className="col-md mb-3">

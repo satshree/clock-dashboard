@@ -11,15 +11,15 @@ import Clock from "./Clock";
 const Widget = (props) => {
   const handle = useFullScreenHandle();
 
-  let timezone = loadFromLocalStorage("timezone");
+  // let timezone = loadFromLocalStorage("timezone");
 
   return (
     <>
       <div className="full-screen-btn">
         <div className="text-center">
-          Showing time for {timezone}
+          {/* Showing time for {timezone.label}
           <br />
-          <br />
+          <br /> */}
           <div>
             <button
               type="button"

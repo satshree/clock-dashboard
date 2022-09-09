@@ -14,10 +14,15 @@
 .clock {
   font-family: "Cabin Sketch", cursive;
   font-size: 20rem;
+  width: 80%;
 }
 
 .clock .secondary {
   font-size: 10rem;
+}
+
+#react-select-timezone-select-listbox {
+  color: black;
 }
 
 @media (max-width: 900px) {
