@@ -7,6 +7,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { loadFromLocalStorage } from "../../localStorage";
 
 import Clock from "./Clock";
+import Weather from "./Weather";
 
 const Widget = (props) => {
   const handle = useFullScreenHandle();
@@ -50,27 +51,23 @@ class WidgetContainer extends Component {
     super(props);
 
     this.state = {
-      weather: {},
+      weather: {
+        show: false,
+      },
       timezone: "",
       fullscreen: false,
     };
   }
 
   componentDidMount() {
-    // let weather = loadFromLocalStorage("weather");
+    let weather = loadFromLocalStorage("weather");
     let timezone = loadFromLocalStorage("timezone");
 
     if (!timezone) {
       Router.push("/");
     } else {
-      this.setState({ ...this.state, timezone });
+      this.setState({ ...this.state, weather, timezone });
     }
-
-    // if (!(weather && weather.location && weather.unit && timezone)) {
-    //   Router.push("/");
-    // } else {
-    //   this.setState({ ...this.state, weather, timezone });
-    // }
   }
 
   render() {
@@ -88,9 +85,12 @@ class WidgetContainer extends Component {
         <div className="container">
           <div
             className="d-flex align-items-center justify-content-center"
-            style={{ height: "100vh" }}
+            style={{ height: "100vh", flexDirection: "column" }}
           >
             <Clock timezone={this.state.timezone} />
+            {this.state.weather.show ? (
+              <Weather weather={this.state.weather} />
+            ) : null}
           </div>
         </div>
       </>

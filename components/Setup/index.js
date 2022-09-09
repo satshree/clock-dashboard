@@ -34,9 +34,10 @@ export default class Setup extends Component {
     let weather = loadFromLocalStorage("weather");
     let timezone = loadFromLocalStorage("timezone");
 
-    if (weather && weather.location && weather.unit && timezone) {
+    if (weather.location && weather.unit && timezone) {
       this.setState({
         ...this.state,
+        showWeather: weather.show,
         weather: weather.location.text,
         weatherLocation: weather.location,
         weatherUnit: weather.unit,
@@ -53,7 +54,11 @@ export default class Setup extends Component {
     if (city === "") {
       weatherLocation.text = "";
     } else {
-      weatherLocation.text = "Cannot find city";
+      weatherLocation.text = (
+        <>
+          Cannot find city <i className="fa fa-times-circle text-danger"></i>
+        </>
+      );
     }
 
     weatherLocation.lat = "";
@@ -77,7 +82,11 @@ export default class Setup extends Component {
             resp[0].state
               ? (text = `${resp[0].name} (${resp[0].country}/${resp[0].state})`)
               : (text = `${resp[0].name} (${resp[0].country})`);
-            weatherLocation.text = text;
+            weatherLocation.text = (
+              <>
+                {text} <i className="fa fa-check-circle text-success"></i>
+              </>
+            );
             weatherLocation.lat = resp[0].lat;
             weatherLocation.lon = resp[0].lon;
           }
@@ -106,26 +115,23 @@ export default class Setup extends Component {
   completeSetup(e) {
     e.preventDefault();
 
-    saveToLocalStorage("timezone", this.state.timezone);
+    if (
+      (this.state.weatherLocation.text === "" ||
+        this.state.weatherLocation.text === "Cannot find city") &&
+      this.state.showWeather
+    ) {
+      alert("Select proper city name for weather!");
+    } else {
+      saveToLocalStorage("weather", {
+        show: this.state.showWeather,
+        location: this.state.weatherLocation,
+        unit: this.state.weatherUnit,
+      });
 
-    Router.push("/dashboard");
+      saveToLocalStorage("timezone", this.state.timezone);
 
-    // if (
-    //   (this.state.weatherLocation.text === "" ||
-    //     this.state.weatherLocation.text === "Cannot find city") &&
-    //   this.state.showWeather
-    // ) {
-    //   alert("Select proper city name for weather!");
-    // } else {
-    //   saveToLocalStorage("weather", {
-    //     location: this.state.weatherLocation,
-    //     unit: this.state.weatherUnit,
-    //   });
-
-    //   saveToLocalStorage("timezone", this.state.timezone);
-
-    //   Router.push("/dashboard");
-    // }
+      Router.push("/dashboard");
+    }
   }
 
   getTimezones = () =>
@@ -177,7 +183,7 @@ export default class Setup extends Component {
                       />
                     </div>
                   </div>
-                  {/* <div className="col-md mb-3">
+                  <div className="col-md mb-3">
                     <div className="setup-card">
                       <h4>Weather</h4>
                       <hr />
@@ -262,7 +268,7 @@ export default class Setup extends Component {
                         </div>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
                 <br />
                 <div className="text-center">

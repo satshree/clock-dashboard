@@ -79,7 +79,7 @@ export default class Clock extends Component {
               </div>
             </>
           ) : (
-            <div style={{ fontSize: "16px" }}>loading ...</div>
+            <div style={{ fontSize: "16px" }}>Loading ...</div>
           )}
         </div>
       </div>
