@@ -34,7 +34,7 @@ export default class Setup extends Component {
     let weather = loadFromLocalStorage("weather");
     let timezone = loadFromLocalStorage("timezone");
 
-    if (weather.location && weather.unit && timezone) {
+    if (weather && timezone) {
       this.setState({
         ...this.state,
         showWeather: weather.show,
@@ -54,11 +54,7 @@ export default class Setup extends Component {
     if (city === "") {
       weatherLocation.text = "";
     } else {
-      weatherLocation.text = (
-        <>
-          Cannot find city <i className="fa fa-times-circle text-danger"></i>
-        </>
-      );
+      weatherLocation.text = "Cannot find city";
     }
 
     weatherLocation.lat = "";
@@ -82,11 +78,7 @@ export default class Setup extends Component {
             resp[0].state
               ? (text = `${resp[0].name} (${resp[0].country}/${resp[0].state})`)
               : (text = `${resp[0].name} (${resp[0].country})`);
-            weatherLocation.text = (
-              <>
-                {text} <i className="fa fa-check-circle text-success"></i>
-              </>
-            );
+            weatherLocation.text = text;
             weatherLocation.lat = resp[0].lat;
             weatherLocation.lon = resp[0].lon;
           }
@@ -261,7 +253,15 @@ export default class Setup extends Component {
                                   Fetching location data...
                                 </div>
                               ) : (
-                                this.state.weatherLocation.text
+                                <span>
+                                  {this.state.weatherLocation.text}{" "}
+                                  {this.state.weatherLocation.text ===
+                                  "Cannot find city" ? (
+                                    <i className="fa fa-times-circle text-success"></i>
+                                  ) : (
+                                    <i className="fa fa-check-circle text-success"></i>
+                                  )}
+                                </span>
                               )}
                             </span>
                           ) : null}
