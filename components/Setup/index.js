@@ -257,7 +257,7 @@ export default class Setup extends Component {
                                   {this.state.weatherLocation.text}{" "}
                                   {this.state.weatherLocation.text ===
                                   "Cannot find city" ? (
-                                    <i className="fa fa-times-circle text-success"></i>
+                                    <i className="fa fa-times-circle text-danger"></i>
                                   ) : (
                                     <i className="fa fa-check-circle text-success"></i>
                                   )}
