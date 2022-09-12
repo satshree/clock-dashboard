@@ -17,10 +17,20 @@ export default class Weather extends Component {
       error: false,
     };
 
+    this.interval = "";
     this.unit = this.props.weather.unit === "metric" ? "°C" : "°F";
   }
 
   componentDidMount() {
+    this.getWeather();
+    this.interval = setInterval(this.getWeather, 1 * 60 * 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  getWeather = () =>
     $.ajax({
       method: "GET",
       url: "https://api.openweathermap.org/data/2.5/weather",
@@ -46,8 +56,8 @@ export default class Weather extends Component {
         description = resp.weather[0].description;
         icon = `http://openweathermap.org/img/wn/${resp.weather[0].icon}@2x.png`;
 
-        temp = `${resp.main.temp}${this.unit}`;
-        feels_like = `${resp.main.feels_like}${this.unit}`;
+        temp = `${parseInt(resp.main.temp)}${this.unit}`;
+        feels_like = `${parseInt(resp.main.feels_like)}${this.unit}`;
         temp_max = `${resp.main.temp_max}${this.unit}`;
         temp_min = `${resp.main.temp_min}${this.unit}`;
 
@@ -69,11 +79,10 @@ export default class Weather extends Component {
         this.setState({ ...this.state, loaded: true, error: true });
       },
     });
-  }
 
   render() {
     return (
-      <div style={{ fontSize: "20px" }}>
+      <div style={{ fontSize: "18px" }}>
         {this.state.error ? (
           <div>Unable to fetch weather. Try refreshing this page.</div>
         ) : this.state.loading ? (
@@ -83,12 +92,10 @@ export default class Weather extends Component {
             <div className="d-flex align-items-center justify-content-center w-100">
               <img src={this.state.icon} alt="weather" />
               <div>
-                <h5>
-                  {this.state.temp} | {this.state.main}
-                </h5>
-                {this.state.description}, feels like {this.state.feels_like}
-                {/* <hr />
-                Max: {this.state.temp_max} | Min: {this.state.temp_min} */}
+                <h4>
+                  {this.state.temp}, feels like {this.state.feels_like} |{" "}
+                  {this.state.description}
+                </h4>
               </div>
             </div>
           </>
