@@ -34,15 +34,22 @@ export default class Clock extends Component {
 
     // let offset = timezone.split(" ")[0].replace("(UTC", "").replace(")", "");
 
-    let time = moment().utcOffset(timezone.value).format("h:mm:ss a");
+    // let time = moment().utcOffset(timezone.value).format("h:mm:ss a");
 
-    let timeSplit = time.split(" ");
+    // let timeSplit = time.split(" ");
+
+    let date = new Date();
+    let dateUTC = new Date(
+      date.toLocaleString("en-US", { timeZone: timezone.label })
+    );
+
+    let hour = dateUTC.getHours();
 
     return {
-      hour: timeSplit[0].split(":")[0],
-      minute: timeSplit[0].split(":")[1],
-      second: timeSplit[0].split(":")[2],
-      ampm: timeSplit[1],
+      hour: hour > 12 ? hour - 12 : hour,
+      minute: dateUTC.getMinutes(),
+      second: String(dateUTC.getSeconds()).padStart(2, "0"),
+      ampm: hour > 11 ? "PM" : "AM",
     };
   }
 

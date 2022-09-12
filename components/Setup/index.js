@@ -126,10 +126,19 @@ export default class Setup extends Component {
     }
   }
 
-  getTimezones = () =>
-    namedTimezones
+  getTimezones = () => {
+    // Array.prototype.sortBy = function (p) {
+    //   return this.slice(0).sort(function (a, b) {
+    //     return a[p] > b[p] ? 1 : a[p] < b[p] ? -1 : 0;
+    //   });
+    // };
+
+    return namedTimezones
       .filter((timezone) => timezone.utc !== "UTC")
       .map((timezone) => ({ value: timezone.utc, label: timezone.timezone }));
+
+    // return namedTimezones.sortBy("label");
+  };
 
   render() {
     return (
@@ -157,22 +166,34 @@ export default class Setup extends Component {
                     <div className="setup-card">
                       <h4>Clock</h4>
                       <hr />
-                      <Select
-                        instanceId={"timezone-select"}
-                        value={this.state.timezone}
-                        onChange={(timezone) =>
-                          this.setState({
-                            ...this.state,
-                            timezone,
-                          })
-                        }
-                        options={this.getTimezones()}
-                        placeholder="Select Timezone"
-                        noOptionsMessage={() =>
-                          "Try searching for continent/country or nearby city"
-                        }
-                        isSearchable
-                      />
+                      <div className="d-flex w-100">
+                        <Select
+                          className="w-100"
+                          instanceId={"timezone-select"}
+                          value={this.state.timezone}
+                          onChange={(timezone) =>
+                            this.setState({
+                              ...this.state,
+                              timezone,
+                            })
+                          }
+                          options={this.getTimezones()}
+                          placeholder="Select Timezone"
+                          noOptionsMessage={() =>
+                            "Try searching for continent/country or nearby city"
+                          }
+                          isSearchable
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger ms-2"
+                          onClick={() =>
+                            this.setState({ ...this.state, timezone: "" })
+                          }
+                        >
+                          <i className="fa fa-trash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div className="col-md mb-3">
