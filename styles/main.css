@@ -14,7 +14,7 @@
 .clock {
   font-family: "Cabin Sketch", cursive;
   font-size: 18rem;
-  width: 80%;
+  width: 70%;
 }
 
 .clock .secondary {
@@ -25,7 +25,7 @@
   color: black;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .clock {
     font-size: 10rem;
   }
@@ -37,7 +37,7 @@
 
 @media (max-width: 564px) {
   .clock {
-    font-size: 5rem;
+    font-size: 7rem;
   }
 
   .clock .secondary {
