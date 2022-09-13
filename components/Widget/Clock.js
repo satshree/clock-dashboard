@@ -11,6 +11,7 @@ export default class Clock extends Component {
         minute: "",
         second: "",
         ampm: "",
+        date: "",
       },
       blink: true,
     };
@@ -50,6 +51,7 @@ export default class Clock extends Component {
       minute: dateUTC.getMinutes(),
       second: String(dateUTC.getSeconds()).padStart(2, "0"),
       ampm: hour > 11 ? "PM" : "AM",
+      date: moment(date).format("MMMM Do YYYY"),
     };
   }
 
@@ -87,6 +89,9 @@ export default class Clock extends Component {
           ) : (
             <div style={{ fontSize: "16px" }}>Loading ...</div>
           )}
+        </div>
+        <div className="text-center" style={{ fontSize: "20px" }}>
+          {this.state.time.date}
         </div>
       </div>
     );
