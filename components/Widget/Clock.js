@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import NoSleep from "@uriopass/nosleep.js";
 import moment from "moment";
 
 export default class Clock extends Component {
@@ -11,27 +12,31 @@ export default class Clock extends Component {
         minute: "",
         second: "",
         ampm: "",
-        date: "",
       },
+      date: moment(new Date()).format("MMMM Do YYYY"),
       blink: true,
     };
 
     this.getTime = this.getTime.bind(this);
+    this.noSleep = new NoSleep();
   }
 
   componentDidMount() {
     window.interval = setInterval(() => {
-      let time = this.getTime();
+      const time = this.getTime();
       this.setState({ ...this.state, time, blink: !this.state.blink });
     }, 1000);
+
+    this.noSleep.enable();
   }
 
   componentWillUnmount() {
     clearInterval(window.interval);
+    this.noSleep.disable();
   }
 
   getTime() {
-    let { timezone } = this.props;
+    const { timezone } = this.props;
 
     // let offset = timezone.split(" ")[0].replace("(UTC", "").replace(")", "");
 
@@ -39,24 +44,23 @@ export default class Clock extends Component {
 
     // let timeSplit = time.split(" ");
 
-    let date = new Date();
-    let dateUTC = new Date(
+    const date = new Date();
+    const dateUTC = new Date(
       date.toLocaleString("en-US", { timeZone: timezone.label })
     );
 
-    let hour = dateUTC.getHours();
+    const hour = dateUTC.getHours();
 
     return {
       hour: hour > 12 ? hour - 12 : hour,
-      minute: dateUTC.getMinutes(),
+      minute: String(dateUTC.getMinutes()).padStart(2, "0"),
       second: String(dateUTC.getSeconds()).padStart(2, "0"),
       ampm: hour > 11 ? "PM" : "AM",
-      date: moment(date).format("MMMM Do YYYY"),
     };
   }
 
   ready = () => {
-    let { time } = this.state;
+    const { time } = this.state;
 
     return time.hour && time.minute && time.second && time.ampm;
   };
@@ -67,22 +71,18 @@ export default class Clock extends Component {
         <div className="d-flex align-items-center w-100">
           {this.ready() ? (
             <>
-              <div className="d-flex align-items-center justify-content-between w-100">
-                <div className="d-flex">
-                  <div id="hour">{this.state.time.hour}</div>
-                  <div
-                    className="dotdot"
-                    style={{ color: this.state.blink ? "white" : "gray" }}
-                  >
-                    :
-                  </div>
-                  <div id="minute">{this.state.time.minute}</div>
+              <div className="d-flex align-items-center justify-content-center w-100">
+                <div id="hour">{this.state.time.hour}</div>
+                <div
+                  className="dotdot"
+                  style={{ color: this.state.blink ? "white" : "gray" }}
+                >
+                  :
                 </div>
-                <div className="d-flex ms-3 secondary">
+                <div id="minute">{this.state.time.minute}</div>
+                <div className="d-flex align-items-center ms-3 secondary">
                   <div id="second">{this.state.time.second}</div>
-                  <div id="ampm" style={{ marginLeft: "1rem" }}>
-                    {this.state.time.ampm}
-                  </div>
+                  <div id="ampm">{this.state.time.ampm}</div>
                 </div>
               </div>
             </>
@@ -91,7 +91,7 @@ export default class Clock extends Component {
           )}
         </div>
         <div className="text-center" style={{ fontSize: "20px" }}>
-          {this.state.time.date}
+          {this.state.date}
         </div>
       </div>
     );
