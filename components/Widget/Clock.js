@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import NoSleep from "@uriopass/nosleep.js";
 import moment from "moment";
 
 export default class Clock extends Component {
@@ -18,7 +17,6 @@ export default class Clock extends Component {
     };
 
     this.getTime = this.getTime.bind(this);
-    this.noSleep = new NoSleep();
   }
 
   componentDidMount() {
@@ -26,13 +24,10 @@ export default class Clock extends Component {
       const time = this.getTime();
       this.setState({ ...this.state, time, blink: !this.state.blink });
     }, 1000);
-
-    this.noSleep.enable();
   }
 
   componentWillUnmount() {
     clearInterval(window.interval);
-    this.noSleep.disable();
   }
 
   getTime() {
@@ -87,7 +82,12 @@ export default class Clock extends Component {
               </div>
             </>
           ) : (
-            <div style={{ fontSize: "16px" }}>Loading ...</div>
+            <div
+              className="d-flex align-items-center justify-content-center w-100"
+              style={{ fontSize: "16px", padding: "2rem" }}
+            >
+              Loading ...
+            </div>
           )}
         </div>
         <div className="text-center" style={{ fontSize: "20px" }}>
