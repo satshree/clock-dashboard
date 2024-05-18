@@ -14,11 +14,20 @@
 .clock {
   font-family: "Cabin Sketch", cursive;
   font-size: 18rem;
-  width: 78%;
+  width: 100%;
 }
 
 .clock .secondary {
-  font-size: 10rem;
+  font-size: 9rem;
+}
+
+.clock .secondary #second {
+  margin-left: 1rem;
+}
+
+.clock .secondary #second,
+.clock .secondary #ampm {
+  width: 11.5rem;
 }
 
 #react-select-timezone-select-listbox {
@@ -27,11 +36,35 @@
 
 @media (max-width: 1000px) {
   .clock {
+    font-size: 15rem;
+  }
+
+  .clock .secondary {
+    font-size: 7rem;
+  }
+
+  .clock .secondary #second,
+  .clock .secondary #ampm {
+    width: 9rem;
+  }
+}
+
+@media (max-width: 750px) {
+  .clock {
     font-size: 10rem;
   }
 
   .clock .secondary {
     font-size: 5rem;
+  }
+
+  .clock .secondary #second,
+  .clock .secondary #ampm {
+    width: 6.5rem;
+  }
+
+  #full-screen-btn {
+    display: none;
   }
 }
 
@@ -41,10 +74,11 @@
   }
 
   .clock .secondary {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
   }
 
-  #full-screen-btn {
-    display: none;
+  .clock .secondary #second,
+  .clock .secondary #ampm {
+    width: 5rem;
   }
 }
