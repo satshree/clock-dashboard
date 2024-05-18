@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Router from "next/router";
+
+import NoSleep from "@uriopass/nosleep.js";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 import { loadFromLocalStorage } from "../../localStorage";
@@ -13,6 +15,16 @@ const Widget = (props) => {
   const handle = useFullScreenHandle();
 
   // let timezone = loadFromLocalStorage("timezone");
+
+  useEffect(() => {
+    const noSleep = new NoSleep();
+
+    noSleep.enable();
+
+    return () => {
+      noSleep.disable();
+    };
+  }, []);
 
   return (
     <>
