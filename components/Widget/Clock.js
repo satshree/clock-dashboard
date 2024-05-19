@@ -63,7 +63,7 @@ export default class Clock extends Component {
   render() {
     return (
       <div className="clock">
-        <div className="d-flex align-items-center w-100">
+        <div className="w-100">
           {this.ready() ? (
             <>
               <div className="d-flex align-items-center justify-content-center w-100">
@@ -76,9 +76,18 @@ export default class Clock extends Component {
                 </div>
                 <div id="minute">{this.state.time.minute}</div>
                 <div className="d-flex align-items-center ms-3 secondary">
-                  <div id="second">{this.state.time.second}</div>
+                  {/* <div id="second">{this.state.time.second}</div> */}
                   <div id="ampm">{this.state.time.ampm}</div>
                 </div>
+              </div>
+              <div style={{ padding: "0 5rem" }}>
+                <div
+                  style={{
+                    border: "2px solid white",
+                    borderRadius: "7px",
+                    width: `${(this.state.time.second / 60) * 100}%`,
+                  }}
+                ></div>
               </div>
             </>
           ) : (
@@ -90,7 +99,10 @@ export default class Clock extends Component {
             </div>
           )}
         </div>
-        <div className="text-center" style={{ fontSize: "20px" }}>
+        <div
+          className="text-center"
+          style={{ fontSize: "50px", marginTop: "3.5rem" }}
+        >
           {this.state.date}
         </div>
       </div>

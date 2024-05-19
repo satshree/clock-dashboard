@@ -89,7 +89,7 @@ export default class Setup extends Component {
           });
         },
         error: (err) => {
-          // console.log(err);
+          console.log(err);
 
           weatherLocation.progress = false;
           this.setState({
@@ -235,7 +235,7 @@ export default class Setup extends Component {
                               onChange={this.setWeatherLocation}
                               required={this.state.showWeather}
                               disabled={!this.state.showWeather}
-                              style={{ width: "60%" }}
+                              style={{ width: "25%" }}
                             />
                             <select
                               className="form-select"
