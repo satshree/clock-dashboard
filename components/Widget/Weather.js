@@ -23,7 +23,7 @@ export default class Weather extends Component {
 
   componentDidMount() {
     this.getWeather();
-    this.interval = setInterval(this.getWeather, 1 * 60 * 1000);
+    this.interval = setInterval(this.getWeather, 15 * 60 * 1000);
   }
 
   componentWillUnmount() {
@@ -82,7 +82,7 @@ export default class Weather extends Component {
 
   render() {
     return (
-      <div style={{ fontSize: "18px" }}>
+      <div style={{ fontSize: "18px", marginBottom: "3rem" }}>
         {this.state.error ? (
           <div>Unable to fetch weather. Try refreshing this page.</div>
         ) : this.state.loading ? (
