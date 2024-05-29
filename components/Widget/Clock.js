@@ -22,7 +22,12 @@ export default class Clock extends Component {
   componentDidMount() {
     window.interval = setInterval(() => {
       const time = this.getTime();
-      this.setState({ ...this.state, time, blink: !this.state.blink });
+      this.setState({
+        ...this.state,
+        time,
+        date: time.date,
+        blink: !this.state.blink,
+      });
     }, 1000);
   }
 
@@ -47,6 +52,7 @@ export default class Clock extends Component {
     const hour = dateUTC.getHours();
 
     return {
+      date: moment(date).format("MMMM Do YYYY"),
       hour: hour > 12 ? hour - 12 : hour,
       minute: String(dateUTC.getMinutes()).padStart(2, "0"),
       second: String(dateUTC.getSeconds()).padStart(2, "0"),
