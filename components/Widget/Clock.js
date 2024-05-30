@@ -17,22 +17,36 @@ export default class Clock extends Component {
     };
 
     this.getTime = this.getTime.bind(this);
+
+    this.intervals = {
+      timeInterval: 0,
+    };
   }
 
   componentDidMount() {
-    window.interval = setInterval(() => {
+    this.intervals.timeInterval = setInterval(() => {
       const time = this.getTime();
       this.setState({
         ...this.state,
         time,
-        date: time.date,
         blink: !this.state.blink,
       });
+
+      if (
+        time.hour === 12 &&
+        time.minute === "00" &&
+        time.second === "00" &&
+        time.ampm === "AM"
+      )
+        this.setState({
+          ...this.state,
+          date: moment(new Date()).format("MMMM Do YYYY"),
+        }); // ONLY UPDATE THE DATE AT 12 AM
     }, 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(window.interval);
+    clearInterval(this.intervals.timeInterval);
   }
 
   getTime() {
@@ -52,7 +66,6 @@ export default class Clock extends Component {
     const hour = dateUTC.getHours();
 
     return {
-      date: moment(date).format("MMMM Do YYYY"),
       hour: hour > 12 ? hour - 12 : hour,
       minute: String(dateUTC.getMinutes()).padStart(2, "0"),
       second: String(dateUTC.getSeconds()).padStart(2, "0"),
