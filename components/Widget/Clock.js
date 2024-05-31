@@ -35,7 +35,7 @@ export default class Clock extends Component {
       if (
         time.hour === 12 &&
         time.minute === "00" &&
-        time.second === "00" &&
+        parseInt(time.second) < 10 &&
         time.ampm === "AM"
       )
         this.setState({
