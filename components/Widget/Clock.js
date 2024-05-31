@@ -99,7 +99,7 @@ export default class Clock extends Component {
                   <div id="ampm">{this.state.time.ampm}</div>
                 </div>
               </div>
-              <div style={{ padding: "0 5rem" }}>
+              <div style={{ marginTop: "-3rem", padding: "0 5rem" }}>
                 <div
                   style={{
                     border: "2px solid white",
@@ -120,7 +120,7 @@ export default class Clock extends Component {
         </div>
         <div
           className="text-center"
-          style={{ fontSize: "50px", marginTop: "3.5rem" }}
+          style={{ fontSize: "50px", marginTop: "1.5rem" }}
         >
           {this.state.date}
         </div>
