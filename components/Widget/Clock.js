@@ -66,7 +66,7 @@ export default class Clock extends Component {
     const hour = dateUTC.getHours();
 
     return {
-      hour: hour > 12 ? hour - 12 : hour,
+      hour: hour === 0 ? 12 : hour > 12 ? hour - 12 : hour,
       minute: String(dateUTC.getMinutes()).padStart(2, "0"),
       second: String(dateUTC.getSeconds()).padStart(2, "0"),
       ampm: hour > 11 ? "PM" : "AM",
