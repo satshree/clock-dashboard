@@ -3,6 +3,9 @@ import { Pressable, StyleSheet } from "react-native";
 
 import { ThemedView } from "../ThemedView";
 import { ThemedText } from "../ThemedText";
+
+import { Colors } from "@/constants/Colors";
+
 import GlobalStyle from "@/styles";
 
 interface ButtonProps {
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
     // transitionProperty: "backgroundColor",
   },
   buttonDefaultBackground: {
-    backgroundColor: "#51ACF6",
+    backgroundColor: Colors.primary,
   },
   buttonPressedBackground: {
     backgroundColor: "#1b95f7",
