@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useState } from "react";
 
 import { Location } from "@/api/location";
-import { getLocation } from "@/utils/localStorage";
+import { getLocation, saveLocation } from "@/utils/localStorage";
 
 interface LocationContextType {
   location: Location;
@@ -20,7 +20,10 @@ export default function LocationProvider({
   const localValue = getLocation();
   const [location, setLocation] = useState<Location>(localValue);
 
-  const updateLocation = (l: Location) => setLocation(l);
+  const updateLocation = (l: Location) => {
+    setLocation(l);
+    saveLocation(l);
+  };
 
   return (
     <LocationContext.Provider value={{ location, updateLocation }}>
