@@ -28,6 +28,12 @@ const GlobalStyle = StyleSheet.create({
     justifyContent: "center",
     flexWrap: "wrap",
   },
+  marginTop: {
+    marginTop: 20,
+  },
+  marginBottom: {
+    marginBottom: 20,
+  },
 });
 
 export default GlobalStyle;
