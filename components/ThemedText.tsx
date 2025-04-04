@@ -38,20 +38,24 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: "Inter_400Regular",
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
-    fontWeight: "600",
+    fontWeight: 600,
+    fontFamily: "Inter_600SemiBold",
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
+    fontWeight: 700,
     lineHeight: 32,
+    fontFamily: "Inter_700Bold",
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 500,
+    fontFamily: "Inter_500Medium",
   },
   link: {
     lineHeight: 30,
