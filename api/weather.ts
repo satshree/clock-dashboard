@@ -8,7 +8,6 @@ export type Weather = {
   hourly: {
     temp: number;
     feels_like: number;
-
     weather: {
       id: number;
       main: string;
@@ -23,6 +22,15 @@ export type Weather = {
       max: number;
     };
   }[];
+};
+
+export const emptyWeatherData: Weather = {
+  lat: 0,
+  lon: 0,
+  timezone: "",
+  timezone_offset: 0,
+  hourly: [],
+  daily: [],
 };
 
 export default async function getWeather(
