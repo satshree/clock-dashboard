@@ -37,14 +37,14 @@ export default function Box() {
           styles.box,
           styles.innerBox,
           GlobalStyle.flexCenter,
-          { height: 182 },
+          { height: 200 },
         ]}
       >
         <ThemedView
           style={[
             GlobalStyle.marginBottom,
             GlobalStyle.flexCenter,
-            { flexDirection: "row", marginTop: 20 },
+            { flexDirection: "row", marginTop: 25 },
           ]}
         >
           <ThemedText type="title" style={{ fontSize: 98 }}>
@@ -88,18 +88,20 @@ export default function Box() {
           styles.innerBox,
           GlobalStyle.marginTop,
           GlobalStyle.flexCenter,
+          { padding: 6.5 },
         ]}
       >
-        <Image
-          source={{
-            uri: `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png `,
-          }}
-          style={{ width: 20 }}
-        />
-        <ThemedText style={{ fontSize: 24 }}>
-          {/* */}
-          {capitalizeWords(weather.weather[0].description)}
-        </ThemedText>
+        <ThemedView style={[GlobalStyle.flexCenter, { flexDirection: "row" }]}>
+          <Image
+            source={{
+              uri: `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png `,
+            }}
+            style={{ width: 50, height: 50 }}
+          />
+          <ThemedText style={{ fontSize: 24, marginTop: 14 }}>
+            {capitalizeWords(weather.weather[0].description)}
+          </ThemedText>
+        </ThemedView>
       </ThemedView>
     </ThemedView>
   );
