@@ -1,12 +1,15 @@
 import React, { ReactNode } from "react";
 
-import LocationProvider from "./LocationContext";
+import UnitProvider from "./UnitContext";
 import WeatherProvider from "./WeatherContext";
+import LocationProvider from "./LocationContext";
 
 export default function ContextProvider({ children }: { children: ReactNode }) {
   return (
     <LocationProvider>
-      <WeatherProvider>{children}</WeatherProvider>
+      <WeatherProvider>
+        <UnitProvider>{children}</UnitProvider>
+      </WeatherProvider>
     </LocationProvider>
   );
 }

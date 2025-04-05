@@ -40,3 +40,15 @@ export function getWeather(): Weather {
 
   return emptyWeatherData;
 }
+
+export const UNIT_LOCAL_STORAGE_KEY = "CL_WT_WIDGET_UNIT";
+export function saveUnit(unit: string) {
+  saveToLocalStorage(UNIT_LOCAL_STORAGE_KEY, unit);
+}
+
+export function getUnit(): "metric" | "imperial" {
+  const data = loadFromLocalStorage(UNIT_LOCAL_STORAGE_KEY);
+  if (data) return data;
+
+  return "metric";
+}
