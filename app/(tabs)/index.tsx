@@ -4,6 +4,7 @@ import {
   // StyleSheet,
   useWindowDimensions,
 } from "react-native";
+import { useRouter } from "expo-router";
 
 import useDebounce from "@/hooks/useDebounce";
 
@@ -40,6 +41,8 @@ export default function HomeScreen() {
 
   if (!unitContext) return;
   if (!locationContext) return;
+
+  const router = useRouter();
 
   const { width } = useWindowDimensions();
   const isSmallScreen = width < 568;
@@ -106,7 +109,7 @@ export default function HomeScreen() {
       return;
     }
 
-    alert(`${location[0].name} ${unit}`);
+    router.push("/widget");
   };
 
   return (
