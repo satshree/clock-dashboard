@@ -33,7 +33,9 @@ export default function Clock() {
   }, []);
 
   return (
-    <ThemedView style={[GlobalStyle.flexCenter, { flexDirection: "row" }]}>
+    <ThemedView
+      style={[GlobalStyle.flexCenter, { flexDirection: "row", marginTop: 110 }]}
+    >
       <ThemedText type="defaultSemiBold" style={{ fontSize: 225 }}>
         {hour}:{minute}
       </ThemedText>

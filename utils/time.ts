@@ -5,7 +5,13 @@ export function getTimeAfterShiftFromUTC(shiftInSeconds: number) {
   const hours = Number(shiftedTime.getUTCHours());
   const minutes = String(shiftedTime.getUTCMinutes()).padStart(2, "0");
 
-  if (hours < 12) {
+  if (hours === 0) {
+    return {
+      hour: String(0).padStart(2, "0"),
+      minutes,
+      ampm: "AM",
+    };
+  } else if (hours < 12) {
     return {
       hour: String(hours).padStart(2, "0"),
       minutes,
@@ -18,4 +24,9 @@ export function getTimeAfterShiftFromUTC(shiftInSeconds: number) {
       ampm: "PM",
     };
   }
+}
+
+export function getSeconds() {
+  const now = new Date();
+  return now.getSeconds();
 }
