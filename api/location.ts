@@ -4,15 +4,11 @@ export type Location = {
   name: string;
   lat: number;
   lon: number;
+  country?: string;
+  state?: string;
 }[];
 
-export const emptyLocationData: Location = [
-  {
-    name: "",
-    lat: 0,
-    lon: 0,
-  },
-];
+export const emptyLocationData: Location = [];
 
 export default async function getLocation(cityName: string): Promise<Location> {
   const response = await openWeatherAPIRequest.get(
