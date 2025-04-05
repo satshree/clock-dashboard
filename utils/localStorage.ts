@@ -1,7 +1,7 @@
 import { emptyWeatherData, Weather } from "@/api/weather";
 import { emptyLocationData, Location } from "@/api/location";
 
-export function saveToLocalStorage(key: string, value: string) {
+export function saveToLocalStorage(key: string, value: any) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
@@ -19,7 +19,7 @@ export function loadFromLocalStorage(key: string) {
 
 export const LOCATION_LOCAL_STORAGE_KEY = "CL_WT_WIDGET_LOCATION";
 export function saveLocation(location: Location) {
-  saveToLocalStorage(LOCATION_LOCAL_STORAGE_KEY, JSON.stringify(location));
+  saveToLocalStorage(LOCATION_LOCAL_STORAGE_KEY, location);
 }
 
 export function getLocation(): Location {
@@ -31,7 +31,7 @@ export function getLocation(): Location {
 
 export const WEATHER_LOCAL_STORAGE_KEY = "CL_WT_WIDGET_WEATHER";
 export function saveWeather(weather: Weather) {
-  saveToLocalStorage(WEATHER_LOCAL_STORAGE_KEY, JSON.stringify(weather));
+  saveToLocalStorage(WEATHER_LOCAL_STORAGE_KEY, weather);
 }
 
 export function getWeather(): Weather {
