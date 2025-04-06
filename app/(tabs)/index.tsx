@@ -72,6 +72,7 @@ export default function HomeScreen() {
       if (locationResponse.length === 0) {
         setLocationTooltip(`Cannot find city named '${debouncedLocation}'`);
         updateLocation(emptyLocationData);
+        setLocationData(emptyLocationData);
       } else {
         setLocationTooltip(
           `${locationResponse[0].name} (${
@@ -85,6 +86,7 @@ export default function HomeScreen() {
       console.log("Error");
 
       updateLocation(emptyLocationData);
+      setLocationData(emptyLocationData);
       setLocationTooltip("Something went wrong. Please try again.");
     }
   };
@@ -95,6 +97,7 @@ export default function HomeScreen() {
     if (c === "") {
       setLocationTooltip("");
       updateLocation(emptyLocationData);
+      setLocationData(emptyLocationData);
     } else {
       setLocationTooltip("...");
     }
