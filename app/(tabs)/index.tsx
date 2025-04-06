@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   // StyleSheet,
   useWindowDimensions,
+  Platform,
   // Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -143,7 +144,14 @@ export default function HomeScreen() {
           backgroundColor: Colors.dark.background,
         },
       ]}
-      onPress={() => Keyboard.dismiss()}
+      onPress={() => {
+        Keyboard.dismiss();
+
+        if (Platform.OS === "android" && navBarVisibility === "hidden") {
+          NavigationBar.setVisibilityAsync("visible");
+          NavigationBar.setBehaviorAsync("inset-touch");
+        }
+      }}
     >
       {!isSmallScreen && <ThemedView></ThemedView>}
 
