@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useKeepAwake } from "expo-keep-awake";
+import * as NavigationBar from "expo-navigation-bar";
 
 import getWeather from "@/api/weather";
 
@@ -54,6 +55,8 @@ export default function Widget() {
 
   const [fetched, setFetched] = useState(false);
 
+  const navBarVisibility = NavigationBar.useVisibility();
+
   // KEEP SCREEN AWAKE
   useKeepAwake();
 
@@ -63,19 +66,13 @@ export default function Widget() {
       fetchWeather();
     }, 30 * 60 * 1000);
 
-    const handleEsc = (event: KeyboardEvent) => {
-      // ESCAPE FULLSCREEN
-      if (Platform.OS === "web" && event.key === "Escape") {
-        // try {
-        //   if (document.exitFullscreen) document.exitFullscreen();
-        // } catch (err) {
-        //   console.log("Error", err);
-        // }
-
-        router.push("/");
-      }
+    return () => {
+      if (hideTimeout.current) clearTimeout(hideTimeout.current);
+      clearInterval(weatherInterval);
     };
+  }, []);
 
+  useEffect(() => {
     if (Platform.OS === "web") {
       // GO FULLSCREEN FOR WEB
       try {
@@ -85,17 +82,38 @@ export default function Widget() {
         console.log("Error", err);
       }
       window.addEventListener("keydown", handleEsc);
-    }
 
-    return () => {
-      if (Platform.OS === "web") {
+      return () => {
         window.removeEventListener("keydown", handleEsc);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      let timeout: NodeJS.Timeout;
+      if (navBarVisibility === "visible") {
+        timeout = setTimeout(() => {
+          NavigationBar.setVisibilityAsync("hidden").then(() => {
+            NavigationBar.setBehaviorAsync("inset-swipe");
+          });
+        }, 3000);
       }
 
-      if (hideTimeout.current) clearTimeout(hideTimeout.current);
-      clearInterval(weatherInterval);
-    };
-  }, []);
+      return () => {
+        if (timeout) clearTimeout(timeout);
+        if (navBarVisibility === "hidden")
+          NavigationBar.setVisibilityAsync("visible");
+      };
+    }
+  }, [navBarVisibility]);
+
+  const handleEsc = (event: KeyboardEvent) => {
+    // ESCAPE FULLSCREEN
+    if (Platform.OS === "web" && event.key === "Escape") {
+      router.push("/");
+    }
+  };
 
   const fetchWeather = async () => {
     try {
@@ -149,7 +167,12 @@ export default function Widget() {
       >
         {fetched ? (
           <>
-            <ThemedView style={[{ width: breakpoint ? "100%" : 350 }]}>
+            <ThemedView
+              style={[
+                GlobalStyle.flexCenter,
+                { flexDirection: "row", width: breakpoint ? "100%" : "30%" },
+              ]}
+            >
               <Box />
             </ThemedView>
             <ThemedView
@@ -174,7 +197,7 @@ export default function Widget() {
               </ThemedView>
               <ThemedView style={[GlobalStyle.marginTop]}>
                 <DateWidget />
-                {Platform.OS === "web" && !document.fullscreenEnabled && (
+                {/* {Platform.OS === "web" && !document.fullscreenEnabled && (
                   <ThemedView style={[GlobalStyle.flexCenter]}>
                     <Pressable
                       onPress={() =>
@@ -184,7 +207,7 @@ export default function Widget() {
                       <ThemedText>Go full screen</ThemedText>
                     </Pressable>
                   </ThemedView>
-                )}
+                )} */}
               </ThemedView>
             </ThemedView>
           </>
@@ -213,6 +236,8 @@ export default function Widget() {
               transform: [{ translateY: slideAnim }],
               position: "absolute",
               bottom: 0,
+              left: "auto",
+              right: "auto",
               alignSelf: "center",
             },
           ]}
