@@ -148,7 +148,7 @@ export default function HomeScreen() {
         },
       ]}
       onPress={() => {
-        Keyboard.dismiss();
+        if (Platform.OS !== "web") Keyboard.dismiss();
 
         if (Platform.OS === "android" && navBarVisibility === "hidden") {
           NavigationBar.setVisibilityAsync("visible");
