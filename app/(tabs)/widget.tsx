@@ -59,6 +59,11 @@ export default function Widget() {
 
   useEffect(() => {
     fetchWeather();
+    const weatherInterval = setInterval(() => {
+      fetchWeather();
+    }, 30 * 60 * 1000);
+
+    console.log("weather", weatherInterval);
 
     const handleEsc = (event: KeyboardEvent) => {
       // ESCAPE FULLSCREEN
@@ -90,17 +95,22 @@ export default function Widget() {
       }
 
       if (hideTimeout.current) clearTimeout(hideTimeout.current);
+      clearInterval(weatherInterval);
     };
   }, []);
 
   const fetchWeather = async () => {
-    const weatherResponse = await getWeather(
-      location[0].lat,
-      location[0].lon,
-      unit
-    );
-    updateWeather(weatherResponse);
-    setFetched(true);
+    try {
+      const weatherResponse = await getWeather(
+        location[0].lat,
+        location[0].lon,
+        unit
+      );
+      updateWeather(weatherResponse);
+      setFetched(true);
+    } catch (err) {
+      console.log("Error", err);
+    }
   };
 
   const showButton = () => {
