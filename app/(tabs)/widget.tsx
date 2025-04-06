@@ -63,8 +63,6 @@ export default function Widget() {
       fetchWeather();
     }, 30 * 60 * 1000);
 
-    console.log("weather", weatherInterval);
-
     const handleEsc = (event: KeyboardEvent) => {
       // ESCAPE FULLSCREEN
       if (Platform.OS === "web" && event.key === "Escape") {
