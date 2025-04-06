@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, useWindowDimensions } from "react-native";
-import KeepAwake from "react-native-keep-awake";
+import { ActivityIndicator, Platform, useWindowDimensions } from "react-native";
+import { useRouter } from "expo-router";
+import { useKeepAwake } from "expo-keep-awake";
 
 import getWeather from "@/api/weather";
 
@@ -28,6 +29,8 @@ export default function Widget() {
   if (!weatherContext) return;
   if (!locationContext) return;
 
+  const router = useRouter();
+
   const { unit } = unitContext;
   const { location } = locationContext;
   const { updateWeather } = weatherContext;
@@ -37,11 +40,36 @@ export default function Widget() {
 
   const [fetched, setFetched] = useState(false);
 
+  // KEEP SCREEN AWAKE
+  useKeepAwake();
+
   useEffect(() => {
-    KeepAwake.activate();
     fetchWeather();
 
-    return () => KeepAwake.deactivate();
+    const handleEsc = (event: KeyboardEvent) => {
+      // ESCAPE FULLSCREEN
+      if (Platform.OS === "web" && event.key === "Escape") {
+        // try {
+        //   if (document.exitFullscreen) document.exitFullscreen();
+        // } catch (err) {
+        //   console.log("Error", err);
+        // }
+
+        router.push("/");
+      }
+    };
+
+    if (Platform.OS === "web") {
+      // GO FULLSCREEN FOR WEB
+      document.documentElement.requestFullscreen();
+      window.addEventListener("keydown", handleEsc);
+    }
+
+    return () => {
+      if (Platform.OS === "web") {
+        window.removeEventListener("keydown", handleEsc);
+      }
+    };
   }, []);
 
   const fetchWeather = async () => {
