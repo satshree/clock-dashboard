@@ -12,19 +12,28 @@ export default function CloseButton() {
       } catch (err) {
         console.log("ERROR", err);
       }
-
-      router.push("/");
     }
+
+    router.push("/");
   };
 
   return (
     <Pressable style={styles.closeButton} onPress={handleButtonClick}>
-      <Image
-        source={require("@/assets/icons/x.svg")}
-        width={24}
-        height={24}
-        alt="Close"
-      />
+      {Platform.OS === "web" ? (
+        <Image
+          source={require("@/assets/icons/x.svg")}
+          width={24}
+          height={24}
+          alt="Close"
+        />
+      ) : (
+        <Image
+          source={require("@/assets/icons/x.png")}
+          width={24}
+          height={24}
+          alt="Close"
+        />
+      )}
     </Pressable>
   );
 }
