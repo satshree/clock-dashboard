@@ -1,5 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator, Platform, useWindowDimensions } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Animated,
+  Platform,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 import { useRouter } from "expo-router";
 import { useKeepAwake } from "expo-keep-awake";
 
@@ -11,6 +18,7 @@ import { LocationContext } from "@/context/LocationContext";
 
 import Box from "@/components/Widget/Box";
 import Clock from "@/components/Widget/Clock";
+import CloseButton from "@/components/CloseButton";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import SecondsBar from "@/components/Widget/SecondsBar";
@@ -28,6 +36,12 @@ export default function Widget() {
   if (!unitContext) return;
   if (!weatherContext) return;
   if (!locationContext) return;
+
+  const BUTTON_VISIBLE_Y = -30;
+  const BUTTON_HIDDEN_Y = 100;
+
+  const slideAnim = useRef(new Animated.Value(BUTTON_HIDDEN_Y)).current;
+  const hideTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const router = useRouter();
 
@@ -61,7 +75,8 @@ export default function Widget() {
 
     if (Platform.OS === "web") {
       // GO FULLSCREEN FOR WEB
-      document.documentElement.requestFullscreen();
+      if (document.fullscreenElement)
+        document.documentElement.requestFullscreen();
       window.addEventListener("keydown", handleEsc);
     }
 
@@ -69,6 +84,8 @@ export default function Widget() {
       if (Platform.OS === "web") {
         window.removeEventListener("keydown", handleEsc);
       }
+
+      if (hideTimeout.current) clearTimeout(hideTimeout.current);
     };
   }, []);
 
@@ -82,62 +99,124 @@ export default function Widget() {
     setFetched(true);
   };
 
+  const showButton = () => {
+    Animated.timing(slideAnim, {
+      toValue: BUTTON_VISIBLE_Y,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+
+    // Reset timer
+    if (hideTimeout.current) clearTimeout(hideTimeout.current);
+
+    hideTimeout.current = setTimeout(() => {
+      hideButton();
+    }, 5000);
+  };
+
+  const hideButton = () => {
+    Animated.timing(slideAnim, {
+      toValue: BUTTON_HIDDEN_Y,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
-    <ThemedView
-      style={[
-        GlobalStyle.fullScreen,
-        GlobalStyle.flexBetween,
-        {
-          padding: 20,
-          flexDirection: breakpoint ? "column" : "row",
-          backgroundColor: Colors.dark.background,
-        },
-      ]}
-    >
-      {fetched ? (
-        <>
-          <ThemedView style={[{ width: breakpoint ? "100%" : "30%" }]}>
-            <Box />
-          </ThemedView>
-          <ThemedView
-            style={[
-              {
-                width: breakpoint ? "100%" : "70%",
-                padding: 20,
-              },
-            ]}
-          >
-            <ThemedView>
-              <Clock />
+    <Pressable style={[GlobalStyle.fullScreen]} onPress={showButton}>
+      <ThemedView
+        style={[
+          GlobalStyle.fullScreen,
+          GlobalStyle.flexBetween,
+          {
+            padding: 20,
+            flexDirection: breakpoint ? "column" : "row",
+            backgroundColor: Colors.dark.background,
+          },
+        ]}
+      >
+        {fetched ? (
+          <>
+            <ThemedView style={[{ width: breakpoint ? "100%" : "30%" }]}>
+              <Box />
             </ThemedView>
             <ThemedView
               style={[
-                GlobalStyle.flexCenter,
-                GlobalStyle.fullWidth,
-                { flexDirection: "column" },
+                {
+                  width: breakpoint ? "100%" : "70%",
+                  padding: 20,
+                },
               ]}
             >
-              <SecondsBar />
+              <ThemedView>
+                <Clock />
+              </ThemedView>
+              <ThemedView
+                style={[
+                  GlobalStyle.flexCenter,
+                  GlobalStyle.fullWidth,
+                  { flexDirection: "column" },
+                ]}
+              >
+                <SecondsBar />
+              </ThemedView>
+              <ThemedView style={[GlobalStyle.marginTop]}>
+                <DateWidget />
+                {Platform.OS === "web" && !document.fullscreenEnabled && (
+                  <ThemedView style={[GlobalStyle.flexCenter]}>
+                    <Pressable
+                      onPress={() =>
+                        document.documentElement.requestFullscreen()
+                      }
+                    >
+                      <ThemedText>Go full screen</ThemedText>
+                    </Pressable>
+                  </ThemedView>
+                )}
+              </ThemedView>
             </ThemedView>
-            <ThemedView style={[GlobalStyle.marginTop]}>
-              <DateWidget />
+          </>
+        ) : (
+          <>
+            <ThemedView style={[GlobalStyle.flexCenter, GlobalStyle.fullWidth]}>
+              <ThemedText style={[GlobalStyle.flexCenter]}>
+                <ActivityIndicator
+                  size="small"
+                  color={Colors.primary}
+                  style={{ marginRight: 10 }}
+                />
+                Fetching weather...
+              </ThemedText>
             </ThemedView>
-          </ThemedView>
-        </>
-      ) : (
-        <>
-          <ThemedView style={[GlobalStyle.flexCenter, GlobalStyle.fullWidth]}>
-            <ThemedText style={[GlobalStyle.flexCenter]}>
-              <ActivityIndicator
-                size="small"
-                color={Colors.primary}
-                style={{ marginRight: 10 }}
-              />
-              Fetching weather...
-            </ThemedText>
-          </ThemedView>
-        </>
-      )}
-    </ThemedView>
+          </>
+        )}
+        <ThemedText style={styles.closeTooltip} muted={true}>
+          Tap anywhere to go back
+        </ThemedText>
+        <Animated.View
+          style={[
+            GlobalStyle.fullWidth,
+            GlobalStyle.flexCenter,
+            {
+              transform: [{ translateY: slideAnim }],
+              position: "absolute",
+              bottom: 0,
+              alignSelf: "center",
+            },
+          ]}
+        >
+          <CloseButton />
+        </Animated.View>
+      </ThemedView>
+    </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  closeTooltip: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    fontSize: 8,
+  },
+});
