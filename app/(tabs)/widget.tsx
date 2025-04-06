@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, useWindowDimensions } from "react-native";
+import KeepAwake from "react-native-keep-awake";
 
 import getWeather from "@/api/weather";
 
@@ -37,7 +38,10 @@ export default function Widget() {
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
+    KeepAwake.activate();
     fetchWeather();
+
+    return () => KeepAwake.deactivate();
   }, []);
 
   const fetchWeather = async () => {
