@@ -6,7 +6,7 @@ import {
   // StyleSheet,
   useWindowDimensions,
   Platform,
-  // Dimensions,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as NavigationBar from "expo-navigation-bar";
@@ -51,7 +51,7 @@ export default function HomeScreen() {
 
   const router = useRouter();
 
-  // const { height } = Dimensions.get("screen");
+  const { height } = Dimensions.get("screen");
   const {
     // height,
     width,
@@ -140,7 +140,7 @@ export default function HomeScreen() {
         GlobalStyle.flexBetween,
         {
           width,
-          height: "100%",
+          height,
           cursor: "auto",
           padding: 10,
           flexDirection: "column",
