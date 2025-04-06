@@ -75,8 +75,12 @@ export default function Widget() {
 
     if (Platform.OS === "web") {
       // GO FULLSCREEN FOR WEB
-      if (document.fullscreenElement)
+      try {
+        // if (document.fullscreenElement)
         document.documentElement.requestFullscreen();
+      } catch (err) {
+        console.log("Error", err);
+      }
       window.addEventListener("keydown", handleEsc);
     }
 
@@ -137,7 +141,7 @@ export default function Widget() {
       >
         {fetched ? (
           <>
-            <ThemedView style={[{ width: breakpoint ? "100%" : "30%" }]}>
+            <ThemedView style={[{ width: breakpoint ? "100%" : 350 }]}>
               <Box />
             </ThemedView>
             <ThemedView
@@ -215,8 +219,8 @@ export default function Widget() {
 const styles = StyleSheet.create({
   closeTooltip: {
     position: "absolute",
-    bottom: 20,
-    left: 20,
+    bottom: 5,
+    right: 20,
     fontSize: 8,
   },
 });

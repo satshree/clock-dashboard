@@ -45,7 +45,7 @@ export default function Clock() {
     >
       <ThemedText
         type="defaultSemiBold"
-        style={{ fontSize: breakpoint ? 135 : 225 }}
+        style={{ fontSize: breakpoint ? 135 : 250 }}
       >
         {hour}:{minute}
       </ThemedText>
