@@ -3,7 +3,7 @@
     "name": "clock-weather-widget",
     "slug": "clock-weather-widget",
     "version": "2.0.0",
-    "orientation": "landscape",
+    "orientation": "default",
     "icon": "./assets/icons/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
