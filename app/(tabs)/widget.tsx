@@ -5,7 +5,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
-  useWindowDimensions,
+  // useWindowDimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useKeepAwake } from "expo-keep-awake";
@@ -50,8 +50,8 @@ export default function Widget() {
   const { location } = locationContext;
   const { updateWeather } = weatherContext;
 
-  const { height, width } = useWindowDimensions();
-  const breakpoint = width < 1035;
+  // const { width } = useWindowDimensions();
+  // const breakpoint = width < 1035;
 
   const [fetched, setFetched] = useState(false);
 
@@ -167,7 +167,7 @@ export default function Widget() {
           GlobalStyle.flexBetween,
           {
             padding: 20,
-            flexDirection: breakpoint ? "column" : "row",
+            flexDirection: "row",
             backgroundColor: Colors.dark.background,
           },
         ]}
@@ -177,15 +177,26 @@ export default function Widget() {
             <ThemedView
               style={[
                 GlobalStyle.flexCenter,
-                { flexDirection: "row", width: breakpoint ? "100%" : "30%" },
+                {
+                  flexDirection: "row",
+                  width: "30%",
+                  height: "100%",
+                  // width: breakpoint ? "100%" : "30%",
+                  // height: breakpoint ? "50%" : "auto",
+                },
               ]}
             >
               <Box />
             </ThemedView>
             <ThemedView
               style={[
+                GlobalStyle.flexCenter,
                 {
-                  width: breakpoint ? "100%" : "70%",
+                  flexDirection: "row",
+                  width: "70%",
+                  height: "100%",
+                  // width: breakpoint ? "100%" : "70%",
+                  // height: breakpoint ? "50%" : "auto",
                   padding: 20,
                 },
               ]}

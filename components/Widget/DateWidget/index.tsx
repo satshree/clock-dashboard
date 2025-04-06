@@ -58,14 +58,11 @@ export default function DateWidget() {
   };
 
   return (
-    <ThemedView
-      style={[
-        GlobalStyle.flexCenter,
-        GlobalStyle.fullWidth,
-        GlobalStyle.marginTop,
-      ]}
-    >
-      <ThemedText type="defaultSemiBold" style={{ fontSize: 36 }}>
+    <ThemedView style={[GlobalStyle.fullWidth, GlobalStyle.marginTop]}>
+      <ThemedText
+        type="defaultSemiBold"
+        style={{ fontSize: 36, textAlign: "center" }}
+      >
         {getMonth()} {getDay()}, {date.getFullYear()}
       </ThemedText>
     </ThemedView>

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, useWindowDimensions } from "react-native";
 
 import { UnitContext } from "@/context/UnitContext";
 import { WeatherContext } from "@/context/WeatherContext";
@@ -18,6 +18,9 @@ export default function Box() {
   if (!unitContext) return;
   if (!weatherContext) return;
 
+  const { width } = useWindowDimensions();
+  const breakpoint = width < 1035;
+
   const { unit } = unitContext;
   const { weather } = weatherContext;
 
@@ -31,7 +34,13 @@ export default function Box() {
   };
 
   return (
-    <ThemedView style={[styles.box, styles.outerBox]}>
+    <ThemedView
+      style={[
+        styles.box,
+        styles.outerBox,
+        { width: breakpoint ? "100%" : 320 },
+      ]}
+    >
       <ThemedView
         style={[
           styles.box,
@@ -69,15 +78,10 @@ export default function Box() {
           </ThemedText>
         </ThemedView>
       </ThemedView>
-      <ThemedView
-        style={[
-          styles.box,
-          styles.innerBox,
-          GlobalStyle.marginTop,
-          GlobalStyle.flexCenter,
-        ]}
-      >
-        <ThemedText style={{ fontSize: 24 }}>
+      <ThemedView style={[styles.box, styles.innerBox, GlobalStyle.marginTop]}>
+        <ThemedText
+          style={[GlobalStyle.fullWidth, { fontSize: 22, textAlign: "center" }]}
+        >
           Feels like {Math.round(weather.main.feels_like)}
           {getUnit()}
         </ThemedText>
@@ -96,9 +100,9 @@ export default function Box() {
             source={{
               uri: `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png `,
             }}
-            style={{ width: 50, height: 50 }}
+            style={{ width: 40, height: 40 }}
           />
-          <ThemedText style={{ fontSize: 24, marginTop: 14 }}>
+          <ThemedText style={{ fontSize: 22, marginTop: 8 }}>
             {capitalizeWords(weather.weather[0].description)}
           </ThemedText>
         </ThemedView>
@@ -113,11 +117,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   outerBox: {
-    minWidth: 320,
+    // width: 320,
     backgroundColor: "#242424",
   },
   innerBox: {
-    // minWidth: 300,
+    // width: 300,
     backgroundColor: "#313131",
   },
 });
