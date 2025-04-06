@@ -3,7 +3,7 @@
     "name": "clock-weather-widget",
     "slug": "clock-weather-widget",
     "version": "2.0.0",
-    "orientation": "portrait",
+    "orientation": "landscape",
     "icon": "./assets/icons/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/icon.png",
         "backgroundColor": "#000"
-      }
+      },
+      "package": "com.satshree.clockweatherwidget"
     },
     "web": {
       "bundler": "metro",
@@ -27,7 +28,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/icon/icon.png",
+          "image": "./assets/icons/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#000"
@@ -36,6 +37,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ca859c53-93f6-4768-bdfa-574088433f5c"
+      }
     }
   }
 }
