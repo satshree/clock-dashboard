@@ -23,11 +23,8 @@ export default function LocationProvider({
     const loadFromLocal = async () => {
       const localValue = await getLocation();
 
-      console.log("there", localValue);
       setLocation(localValue);
     };
-
-    console.log("here");
 
     loadFromLocal();
   }, []);
