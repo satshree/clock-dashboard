@@ -3,11 +3,12 @@ import {
   Keyboard,
   Pressable,
   ActivityIndicator,
-  KeyboardAvoidingView,
   // StyleSheet,
   useWindowDimensions,
+  // Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
+import * as NavigationBar from "expo-navigation-bar";
 
 import useDebounce from "@/hooks/useDebounce";
 
@@ -45,8 +46,11 @@ export default function HomeScreen() {
   if (!unitContext) return;
   if (!locationContext) return;
 
+  const navBarVisibility = NavigationBar.useVisibility();
+
   const router = useRouter();
 
+  // const { height } = Dimensions.get("screen");
   const { height, width } = useWindowDimensions();
   const isSmallScreen = width < 568;
 
@@ -57,6 +61,11 @@ export default function HomeScreen() {
   const [locationTooltip, setLocationTooltip] = useState("");
   const [locationData, setLocationData] = useState<Location>(emptyLocationData);
   const debouncedLocation = useDebounce(cityName);
+
+  useEffect(() => {
+    if (navBarVisibility === "hidden")
+      NavigationBar.setVisibilityAsync("visible");
+  }, []);
 
   useEffect(() => {
     if (debouncedLocation) fetchLocation();
@@ -127,7 +136,7 @@ export default function HomeScreen() {
         GlobalStyle.flexBetween,
         {
           width,
-          height,
+          height: "100%",
           cursor: "auto",
           padding: 10,
           flexDirection: "column",

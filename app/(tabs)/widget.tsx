@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
-  ActivityIndicator,
   Animated,
   Platform,
   Pressable,
   StyleSheet,
+  ActivityIndicator,
   useWindowDimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -50,7 +50,7 @@ export default function Widget() {
   const { location } = locationContext;
   const { updateWeather } = weatherContext;
 
-  const { width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const breakpoint = width < 1035;
 
   const [fetched, setFetched] = useState(false);
@@ -93,11 +93,13 @@ export default function Widget() {
     if (Platform.OS === "android") {
       let timeout: NodeJS.Timeout;
       if (navBarVisibility === "visible") {
-        timeout = setTimeout(() => {
-          NavigationBar.setVisibilityAsync("hidden").then(() => {
-            NavigationBar.setBehaviorAsync("inset-swipe");
-          });
-        }, 3000);
+        timeout = setTimeout(
+          () =>
+            NavigationBar.setVisibilityAsync("hidden").then(() => {
+              NavigationBar.setBehaviorAsync("inset-swipe");
+            }),
+          5000
+        );
       }
 
       return () => {
@@ -136,6 +138,8 @@ export default function Widget() {
       useNativeDriver: true,
     }).start();
 
+    NavigationBar.setVisibilityAsync("visible");
+
     // Reset timer
     if (hideTimeout.current) clearTimeout(hideTimeout.current);
 
@@ -153,7 +157,10 @@ export default function Widget() {
   };
 
   return (
-    <Pressable style={[GlobalStyle.fullScreen]} onPress={showButton}>
+    <Pressable
+      style={[GlobalStyle.fullScreen, { cursor: "pointer" }]}
+      onPress={showButton}
+    >
       <ThemedView
         style={[
           GlobalStyle.fullScreen,
@@ -236,7 +243,7 @@ export default function Widget() {
               transform: [{ translateY: slideAnim }],
               position: "absolute",
               bottom: 0,
-              left: "auto",
+              left: Platform.OS === "web" ? "auto" : "50%",
               right: "auto",
               alignSelf: "center",
             },
