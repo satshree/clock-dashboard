@@ -33,7 +33,9 @@ export default function Button(props: ButtonProps) {
             : styles.buttonDefaultBackground,
         ]}
       >
-        <ThemedText>{props.text}</ThemedText>
+        <ThemedText style={[GlobalStyle.fullWidth, { textAlign: "center" }]}>
+          {props.text}
+        </ThemedText>
       </ThemedView>
     </Pressable>
   );

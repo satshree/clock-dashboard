@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  Keyboard,
+  Pressable,
   ActivityIndicator,
+  KeyboardAvoidingView,
   // StyleSheet,
   useWindowDimensions,
 } from "react-native";
@@ -119,104 +122,118 @@ export default function HomeScreen() {
   };
 
   return (
-    <ThemedView
-      style={[
-        GlobalStyle.fullScreen,
-        GlobalStyle.flexBetween,
-        {
-          padding: 10,
-          flexDirection: "column",
-          backgroundColor: Colors.dark.background,
-        },
-      ]}
-    >
-      {!isSmallScreen && <ThemedView></ThemedView>}
-
-      <ThemedView
+    <KeyboardAvoidingView style={[GlobalStyle.fullScreen]}>
+      <Pressable
         style={[
+          GlobalStyle.fullScreen,
           GlobalStyle.flexBetween,
-          GlobalStyle.fullWidth,
           {
-            flexDirection: isSmallScreen ? "column" : "row",
-            marginTop: isSmallScreen ? 100 : 0,
+            cursor: "auto",
+            padding: 10,
+            flexDirection: "column",
+            backgroundColor: Colors.dark.background,
           },
         ]}
+        onPress={() => Keyboard.dismiss()}
       >
-        <ThemedView
-          style={[
-            GlobalStyle.flexCenter,
-            {
-              width: isSmallScreen ? "100%" : "50%",
-              marginBottom: isSmallScreen ? 100 : 0,
-            },
-          ]}
-        >
-          <ThemedText type="title">Clock and Weather Widget</ThemedText>
-        </ThemedView>
-        <ThemedView
-          style={[
-            GlobalStyle.flexCenter,
-            {
-              width: isSmallScreen ? "100%" : "50%",
-              marginTop: isSmallScreen ? 20 : 0,
-            },
-          ]}
-        >
-          <Card>
-            <ThemedText blackText={true} type="subtitle">
-              Select your location
-            </ThemedText>
-            <ThemedView style={GlobalStyle.marginTop}>
-              <Input
-                placeholder="Start by typing city name..."
-                value={cityName}
-                onChange={handleCityNameChange}
-              />
+        {!isSmallScreen && <ThemedView></ThemedView>}
 
-              {locationTooltip === "..." ? (
-                <ThemedView
-                  style={[{ marginTop: 7, alignItems: "flex-start" }]}
-                >
-                  <ActivityIndicator size="small" color={Colors.primary} />
-                </ThemedView>
-              ) : (
-                <ThemedText
-                  blackText={true}
-                  style={{ marginTop: 5, fontSize: 13 }}
-                >
-                  {locationTooltip}
-                </ThemedText>
-              )}
-            </ThemedView>
-          </Card>
-          <ThemedView style={[GlobalStyle.marginTop, GlobalStyle.marginBottom]}>
+        <ThemedView
+          style={[
+            GlobalStyle.flexBetween,
+            GlobalStyle.fullWidth,
+            {
+              flexDirection: isSmallScreen ? "column" : "row",
+              marginTop: isSmallScreen ? 100 : 0,
+            },
+          ]}
+        >
+          <ThemedView
+            style={[
+              GlobalStyle.flexCenter,
+              {
+                width: isSmallScreen ? "100%" : "50%",
+                marginBottom: isSmallScreen ? 100 : 0,
+                flexWrap: "nowrap",
+              },
+            ]}
+          >
+            <ThemedText type="title" style={{ textAlign: "center" }}>
+              Clock and Weather Widget
+            </ThemedText>
+          </ThemedView>
+          <ThemedView
+            style={[
+              GlobalStyle.flexCenter,
+              {
+                width: isSmallScreen ? "100%" : "50%",
+                marginTop: isSmallScreen ? 20 : 0,
+              },
+            ]}
+          >
             <Card>
               <ThemedText blackText={true} type="subtitle">
-                Select your Unit
+                Select your location
               </ThemedText>
               <ThemedView style={GlobalStyle.marginTop}>
-                <Radio
-                  options={unitOptions}
-                  selected={unit}
-                  onChange={(value) => {
-                    if (value === "metric" || value === "imperial") {
-                      updateUnit(value);
-                    } else {
-                      updateUnit("metric");
-                    }
-                  }}
+                <Input
+                  placeholder="Start by typing city name..."
+                  value={cityName}
+                  onChange={handleCityNameChange}
                 />
+
+                {locationTooltip === "..." ? (
+                  <ThemedView
+                    style={[{ marginTop: 7, alignItems: "flex-start" }]}
+                  >
+                    <ActivityIndicator size="small" color={Colors.primary} />
+                  </ThemedView>
+                ) : (
+                  <ThemedText
+                    blackText={true}
+                    style={{ marginTop: 5, fontSize: 13 }}
+                  >
+                    {locationTooltip}
+                  </ThemedText>
+                )}
               </ThemedView>
             </Card>
+            <ThemedView
+              style={[GlobalStyle.marginTop, GlobalStyle.marginBottom]}
+            >
+              <Card>
+                <ThemedText blackText={true} type="subtitle">
+                  Select your Unit
+                </ThemedText>
+                <ThemedView style={GlobalStyle.marginTop}>
+                  <Radio
+                    options={unitOptions}
+                    selected={unit}
+                    onChange={(value) => {
+                      if (value === "metric" || value === "imperial") {
+                        updateUnit(value);
+                      } else {
+                        updateUnit("metric");
+                      }
+                    }}
+                  />
+                </ThemedView>
+              </Card>
+            </ThemedView>
+            <Button text="Show Widget" onClick={handleSubmit} />
           </ThemedView>
-          <Button text="Show Widget" onClick={handleSubmit} />
         </ThemedView>
-      </ThemedView>
 
-      <ThemedView style={[GlobalStyle.flexCenter, GlobalStyle.fullWidth]}>
-        <ThemedText muted={true}>Made by Satshree Shrestha</ThemedText>
-      </ThemedView>
-    </ThemedView>
+        <ThemedView>
+          <ThemedText
+            style={[GlobalStyle.fullWidth, { textAlign: "center" }]}
+            muted={true}
+          >
+            Made by Satshree Shrestha
+          </ThemedText>
+        </ThemedView>
+      </Pressable>
+    </KeyboardAvoidingView>
   );
 }
 
