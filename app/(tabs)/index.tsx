@@ -140,7 +140,7 @@ export default function HomeScreen() {
         GlobalStyle.flexBetween,
         {
           width,
-          height,
+          height: Platform.OS === "web" ? "100%" : height,
           cursor: "auto",
           padding: 10,
           flexDirection: "column",
