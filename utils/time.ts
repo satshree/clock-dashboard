@@ -7,7 +7,7 @@ export function getTimeAfterShiftFromUTC(shiftInSeconds: number) {
 
   if (hours === 0) {
     return {
-      hour: String(0).padStart(2, "0"),
+      hour: String(12).padStart(2, "0"),
       minutes,
       ampm: "AM",
     };
@@ -19,7 +19,7 @@ export function getTimeAfterShiftFromUTC(shiftInSeconds: number) {
     };
   } else {
     return {
-      hour: String((12 - hours) * -1),
+      hour: String(hours === 12 ? 12 : (12 - hours) * -1),
       minutes,
       ampm: "PM",
     };
