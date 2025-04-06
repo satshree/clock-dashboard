@@ -52,7 +52,10 @@ export default function HomeScreen() {
   const router = useRouter();
 
   // const { height } = Dimensions.get("screen");
-  const { height, width } = useWindowDimensions();
+  const {
+    // height,
+    width,
+  } = useWindowDimensions();
   const isSmallScreen = width < 568;
 
   const { unit, updateUnit } = unitContext;
