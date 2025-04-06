@@ -1,5 +1,5 @@
 import { getUnit, saveUnit } from "@/utils/localStorage";
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 
 interface UnitContextType {
   unit: "metric" | "imperial";
@@ -11,8 +11,16 @@ export const UnitContext = createContext<UnitContextType | undefined>(
 );
 
 export default function UnitProvider({ children }: { children: ReactNode }) {
-  const localValue = getUnit();
-  const [unit, setUnit] = useState(localValue);
+  const [unit, setUnit] = useState<"metric" | "imperial">("metric");
+
+  useEffect(() => {
+    const loadFromLocal = async () => {
+      const localValue = await getUnit();
+      setUnit(localValue);
+    };
+
+    loadFromLocal();
+  }, []);
 
   const updateUnit = (u: "metric" | "imperial") => {
     setUnit(u);

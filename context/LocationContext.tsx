@@ -1,6 +1,6 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 
-import { Location } from "@/api/location";
+import { emptyLocationData, Location } from "@/api/location";
 import { getLocation, saveLocation } from "@/utils/localStorage";
 
 interface LocationContextType {
@@ -17,8 +17,20 @@ export default function LocationProvider({
 }: {
   children: ReactNode;
 }) {
-  const localValue = getLocation();
-  const [location, setLocation] = useState<Location>(localValue);
+  const [location, setLocation] = useState<Location>(emptyLocationData);
+
+  useEffect(() => {
+    const loadFromLocal = async () => {
+      const localValue = await getLocation();
+
+      console.log("there", localValue);
+      setLocation(localValue);
+    };
+
+    console.log("here");
+
+    loadFromLocal();
+  }, []);
 
   const updateLocation = (l: Location) => {
     setLocation(l);

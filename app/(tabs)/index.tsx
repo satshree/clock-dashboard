@@ -8,7 +8,7 @@ import { useRouter } from "expo-router";
 
 import useDebounce from "@/hooks/useDebounce";
 
-import getLocation, { emptyLocationData } from "@/api/location";
+import getLocation, { Location, emptyLocationData } from "@/api/location";
 
 import { UnitContext } from "@/context/UnitContext";
 import { LocationContext } from "@/context/LocationContext";
@@ -52,6 +52,7 @@ export default function HomeScreen() {
 
   const [cityName, setCityName] = useState("");
   const [locationTooltip, setLocationTooltip] = useState("");
+  const [locationData, setLocationData] = useState<Location>(emptyLocationData);
   const debouncedLocation = useDebounce(cityName);
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export default function HomeScreen() {
     if (location.length > 0 && location[0].name !== "") {
       setCityName(location[0].name);
     }
-  }, []);
+  }, [location]);
 
   const fetchLocation = async () => {
     try {
@@ -77,7 +78,8 @@ export default function HomeScreen() {
             locationResponse[0].state ?? locationResponse[0].country
           }) ✅`
         );
-        updateLocation(locationResponse);
+        setLocationData(locationResponse);
+        // updateLocation(locationResponse);
       }
     } catch (err) {
       console.log("Error");
@@ -104,11 +106,12 @@ export default function HomeScreen() {
       return;
     }
 
-    if (location.length === 0) {
+    if (locationData.length === 0) {
       alert("Please enter valid location/city name.");
       return;
     }
 
+    updateLocation(locationData);
     router.push("/widget");
   };
 
