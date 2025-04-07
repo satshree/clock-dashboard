@@ -21,7 +21,7 @@ export default function useWakeLock() {
         });
       } else {
         alert(
-          "Wake lock is not supported. Change your device’s settings to never sleep the display."
+          "Wake lock is not supported. Change your device's settings to never sleep the display."
         );
       }
     } catch (err) {
