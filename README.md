@@ -6,17 +6,11 @@ Use any of your leftover devices (tablets/2-in-1) or televisions as signage disp
 
 ---
 
-Built using React Native Expo for cross platform compatibility
+Built using React Native Expo for cross platform compatibility.
 
-    Currently supports,
+Currently hosted web version to Netlify. [Live](https://cl-dashboard.netlify.app)
 
-    [x] Web
-
-    [ ] Android
-
-    [ ] iOS
-
-    [ ] Desktop (macOS/Windows/Linux)
+Fork or download this repository to build for your native version. [Refer to this doc.](./expo.md)
 
 ## Design
 
