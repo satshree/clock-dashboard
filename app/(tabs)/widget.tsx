@@ -11,15 +11,16 @@ import { useRouter } from "expo-router";
 import {
   activateKeepAwakeAsync,
   deactivateKeepAwake,
-  isAvailableAsync,
+  // isAvailableAsync,
 } from "expo-keep-awake";
 import * as NavigationBar from "expo-navigation-bar";
 
 import getWeather from "@/api/weather";
 
+import NoSleep from "@/utils/nosleep";
 // import useWakeLock from "@/hooks/useWakeLock";
 
-import Awake from "@/utils/awake";
+// import Awake from "@/utils/awake";
 
 import { UnitContext } from "@/context/UnitContext";
 import { WeatherContext } from "@/context/WeatherContext";
@@ -76,13 +77,12 @@ export default function Widget() {
     // KEEP SCREEN AWAKE
     if (Platform.OS !== "web") {
       const awake = async () => {
-        if (await isAvailableAsync()) {
-          await activateKeepAwakeAsync();
-        } else {
-          alert(
-            "Wake lock is not supported. Change your device's settings to never sleep the display."
-          );
-        }
+        await activateKeepAwakeAsync();
+        // if (await isAvailableAsync()) {
+        //   await activateKeepAwakeAsync();
+        // } else {
+        //   alert("Adjust your device's settings to never sleep the display.");
+        // }
       };
       awake();
     }
@@ -105,8 +105,16 @@ export default function Widget() {
       }
       window.addEventListener("keydown", handleEsc);
 
+      // KEEP SCREEN AWAKE FOR WEB
+      const noSleep = new NoSleep();
+      const enableNoSleep = async () => {
+        await noSleep.enable();
+      };
+      enableNoSleep();
+
       return () => {
         window.removeEventListener("keydown", handleEsc);
+        noSleep.disable();
         // releaseWakeLock();
       };
     }
@@ -184,7 +192,7 @@ export default function Widget() {
       style={[GlobalStyle.fullScreen, { cursor: "pointer" }]}
       onPress={showButton}
     >
-      {Platform.OS === "web" && <Awake />}
+      {/* {Platform.OS === "web" && <Awake />} */}
       <ThemedView
         style={[
           GlobalStyle.fullScreen,
