@@ -32,6 +32,7 @@ import DateWidget from "@/components/Widget/DateWidget";
 import { Colors } from "@/constants/Colors";
 
 import GlobalStyle from "@/styles";
+import useWakeLock from "@/hooks/useWakeLock";
 
 export default function Widget() {
   const unitContext = useContext(UnitContext);
@@ -59,6 +60,8 @@ export default function Widget() {
 
   const [fetched, setFetched] = useState(false);
 
+  const { releaseWakeLock } = useWakeLock();
+
   const navBarVisibility = NavigationBar.useVisibility();
 
   useEffect(() => {
@@ -68,20 +71,22 @@ export default function Widget() {
     }, 30 * 60 * 1000);
 
     // KEEP SCREEN AWAKE
-    const awake = async () => {
-      if (await isAvailableAsync()) {
-        await activateKeepAwakeAsync();
-      } else {
-        alert(
-          "This browser does not support wake lock. Change the settings on your device to never lock display."
-        );
-      }
-    };
-    awake();
+    if (Platform.OS !== "web") {
+      const awake = async () => {
+        if (await isAvailableAsync()) {
+          await activateKeepAwakeAsync();
+        } else {
+          alert(
+            "Wake lock is not supported. Change your device’s settings to never sleep the display."
+          );
+        }
+      };
+      awake();
+    }
 
     return () => {
       if (hideTimeout.current) clearTimeout(hideTimeout.current);
-      deactivateKeepAwake();
+      if (Platform.OS !== "web") deactivateKeepAwake();
       clearInterval(weatherInterval);
     };
   }, []);
@@ -99,6 +104,7 @@ export default function Widget() {
 
       return () => {
         window.removeEventListener("keydown", handleEsc);
+        releaseWakeLock();
       };
     }
   }, []);
