@@ -43,7 +43,7 @@ export default function Clock() {
         { flexDirection: "row", marginTop: 80, marginBottom: 50 },
       ]}
     >
-      <ThemedText type="defaultSemiBold" style={{ fontSize: 270 }}>
+      <ThemedText type="defaultSemiBold" style={{ fontSize: 250 }}>
         {hour}:{minute}
       </ThemedText>
       <ThemedText type="defaultSemiBold" style={{ fontSize: 65 }}>

@@ -8,7 +8,11 @@ import {
   // useWindowDimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { useKeepAwake } from "expo-keep-awake";
+import {
+  activateKeepAwakeAsync,
+  deactivateKeepAwake,
+  isAvailableAsync,
+} from "expo-keep-awake";
 import * as NavigationBar from "expo-navigation-bar";
 
 import getWeather from "@/api/weather";
@@ -57,17 +61,27 @@ export default function Widget() {
 
   const navBarVisibility = NavigationBar.useVisibility();
 
-  // KEEP SCREEN AWAKE
-  useKeepAwake();
-
   useEffect(() => {
     fetchWeather();
     const weatherInterval = setInterval(() => {
       fetchWeather();
     }, 30 * 60 * 1000);
 
+    // KEEP SCREEN AWAKE
+    const awake = async () => {
+      if (await isAvailableAsync()) {
+        await activateKeepAwakeAsync();
+      } else {
+        alert(
+          "This browser does not support wake lock. Change the settings on your device to never lock display."
+        );
+      }
+    };
+    awake();
+
     return () => {
       if (hideTimeout.current) clearTimeout(hideTimeout.current);
+      deactivateKeepAwake();
       clearInterval(weatherInterval);
     };
   }, []);
@@ -135,10 +149,10 @@ export default function Widget() {
     Animated.timing(slideAnim, {
       toValue: BUTTON_VISIBLE_Y,
       duration: 300,
-      useNativeDriver: true,
+      useNativeDriver: Platform.OS !== "web",
     }).start();
 
-    NavigationBar.setVisibilityAsync("visible");
+    if (Platform.OS === "android") NavigationBar.setVisibilityAsync("visible");
 
     // Reset timer
     if (hideTimeout.current) clearTimeout(hideTimeout.current);
@@ -152,7 +166,7 @@ export default function Widget() {
     Animated.timing(slideAnim, {
       toValue: BUTTON_HIDDEN_Y,
       duration: 300,
-      useNativeDriver: true,
+      useNativeDriver: Platform.OS !== "web",
     }).start();
   };
 

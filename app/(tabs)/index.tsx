@@ -67,7 +67,7 @@ export default function HomeScreen() {
   const debouncedLocation = useDebounce(cityName);
 
   useEffect(() => {
-    if (navBarVisibility === "hidden")
+    if (Platform.OS === "android" && navBarVisibility === "hidden")
       NavigationBar.setVisibilityAsync("visible");
   }, []);
 
