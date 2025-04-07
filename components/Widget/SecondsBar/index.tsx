@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, useWindowDimensions } from "react-native";
+import {
+  StyleSheet,
+  // useWindowDimensions
+} from "react-native";
 
 import { ThemedView } from "@/components/ThemedView";
 
@@ -9,8 +12,8 @@ import GlobalStyle from "@/styles";
 export default function SecondsBar() {
   const [second, setSeconds] = useState(0);
 
-  const { width } = useWindowDimensions();
-  const breakpoint = width < 568;
+  // const { width } = useWindowDimensions();
+  // const breakpoint = width < 568;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,7 +33,7 @@ export default function SecondsBar() {
         {
           flexDirection: "row",
           maxWidth: 800,
-          marginTop: breakpoint ? 50 : 100,
+          marginTop: 50,
         },
       ]}
     >
