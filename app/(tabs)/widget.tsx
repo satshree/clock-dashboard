@@ -5,7 +5,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
-  // useWindowDimensions,
+  useWindowDimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import {
@@ -54,8 +54,8 @@ export default function Widget() {
   const { location } = locationContext;
   const { updateWeather } = weatherContext;
 
-  // const { width } = useWindowDimensions();
-  // const breakpoint = width < 1035;
+  const { width } = useWindowDimensions();
+  const breakpoint = width < 568;
 
   const [fetched, setFetched] = useState(false);
 
@@ -193,10 +193,10 @@ export default function Widget() {
                 GlobalStyle.flexCenter,
                 {
                   flexDirection: "row",
-                  width: "30%",
-                  height: "100%",
-                  // width: breakpoint ? "100%" : "30%",
-                  // height: breakpoint ? "50%" : "auto",
+                  // width: "30%",
+                  // height: "100%",
+                  width: breakpoint ? "100%" : "30%",
+                  height: breakpoint ? "auto" : "100%",
                 },
               ]}
             >
@@ -207,10 +207,10 @@ export default function Widget() {
                 GlobalStyle.flexCenter,
                 {
                   flexDirection: "row",
-                  width: "70%",
-                  height: "100%",
-                  // width: breakpoint ? "100%" : "70%",
-                  // height: breakpoint ? "50%" : "auto",
+                  // width: "70%",
+                  // height: "100%",
+                  width: breakpoint ? "100%" : "70%",
+                  height: breakpoint ? "auto" : "100%",
                   padding: 20,
                 },
               ]}

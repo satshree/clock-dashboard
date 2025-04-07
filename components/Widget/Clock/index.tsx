@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-// import { useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 import { WeatherContext } from "@/context/WeatherContext";
 
@@ -17,8 +17,8 @@ export default function Clock() {
 
   const { weather } = weatherContext;
 
-  // const { width } = useWindowDimensions();
-  // const breakpoint = width < 535;
+  const { width } = useWindowDimensions();
+  const breakpoint = width < 568;
 
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
@@ -40,13 +40,23 @@ export default function Clock() {
     <ThemedView
       style={[
         GlobalStyle.flexCenter,
-        { flexDirection: "row", marginTop: 80, marginBottom: 50 },
+        {
+          flexDirection: "row",
+          marginTop: 80,
+          marginBottom: breakpoint ? 10 : 50,
+        },
       ]}
     >
-      <ThemedText type="defaultSemiBold" style={{ fontSize: 250 }}>
+      <ThemedText
+        type="defaultSemiBold"
+        style={{ fontSize: breakpoint ? 86 : 250 }}
+      >
         {hour}:{minute}
       </ThemedText>
-      <ThemedText type="defaultSemiBold" style={{ fontSize: 65 }}>
+      <ThemedText
+        type="defaultSemiBold"
+        style={{ fontSize: breakpoint ? 45 : 65 }}
+      >
         {ampm}
       </ThemedText>
     </ThemedView>
