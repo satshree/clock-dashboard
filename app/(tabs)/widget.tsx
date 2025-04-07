@@ -17,6 +17,10 @@ import * as NavigationBar from "expo-navigation-bar";
 
 import getWeather from "@/api/weather";
 
+// import useWakeLock from "@/hooks/useWakeLock";
+
+import Awake from "@/utils/awake";
+
 import { UnitContext } from "@/context/UnitContext";
 import { WeatherContext } from "@/context/WeatherContext";
 import { LocationContext } from "@/context/LocationContext";
@@ -32,7 +36,6 @@ import DateWidget from "@/components/Widget/DateWidget";
 import { Colors } from "@/constants/Colors";
 
 import GlobalStyle from "@/styles";
-import useWakeLock from "@/hooks/useWakeLock";
 
 export default function Widget() {
   const unitContext = useContext(UnitContext);
@@ -60,7 +63,7 @@ export default function Widget() {
 
   const [fetched, setFetched] = useState(false);
 
-  const { releaseWakeLock } = useWakeLock();
+  // const { releaseWakeLock } = useWakeLock();
 
   const navBarVisibility = NavigationBar.useVisibility();
 
@@ -77,7 +80,7 @@ export default function Widget() {
           await activateKeepAwakeAsync();
         } else {
           alert(
-            "Wake lock is not supported. Change your device’s settings to never sleep the display."
+            "Wake lock is not supported. Change your device's settings to never sleep the display."
           );
         }
       };
@@ -104,7 +107,7 @@ export default function Widget() {
 
       return () => {
         window.removeEventListener("keydown", handleEsc);
-        releaseWakeLock();
+        // releaseWakeLock();
       };
     }
   }, []);
@@ -181,6 +184,7 @@ export default function Widget() {
       style={[GlobalStyle.fullScreen, { cursor: "pointer" }]}
       onPress={showButton}
     >
+      {Platform.OS === "web" && <Awake />}
       <ThemedView
         style={[
           GlobalStyle.fullScreen,
